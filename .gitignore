@@ -1,0 +1,118 @@
+# Archivos y directorios comunes generados por el sistema operativo
+.DS_Store
+.Trash/
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Archivos de Git
+.git/
+.gitattributes
+.gitmodules
+.gitkeep # Si lo usas para directorios vacíos que quieres versionar temporalmente
+
+# Entornos de Python (lo tienes en tu proyecto Contratame)
+# Directorios de entorno virtual
+venv/
+env/
+.venv/
+.env/
+
+# Archivos de caché y compilación de Python
+__pycache__/
+*.pyc
+*.pyd
+*.pyo
+build/
+dist/
+*.egg-info/
+.pytest_cache/
+htmlcov/
+.coverage
+.mypy_cache/
+
+# Archivos de logs
+*.log
+logs/
+tmp/
+temp/
+
+# Archivos de configuración local (variables de entorno, secretos)
+.env
+.flaskenv
+.vscode/settings.json # Puedes ignorar esto si no quieres compartir configuraciones específicas del editor.
+.vscode/*.local # Archivos de configuración local de VS Code
+*.ini # A veces se usan para configuraciones, si son locales ignóralos.
+*.cfg # Ídem.
+*.toml # Ídem.
+
+# Dependencias de Node.js (común en proyectos web)
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+package-lock.json # Si no quieres versionar el lockfile
+
+# Archivos de IDEs (Entornos de Desarrollo Integrado)
+.idea/             # IntelliJ IDEA / WebStorm / PhpStorm
+*.iml              # IntelliJ IDEA
+*.ipr              # IntelliJ IDEA
+*.iws              # IntelliJ IDEA
+.vscode/           # Visual Studio Code (a menudo se ignora la carpeta entera)
+.vscode/*.code-workspace # Archivos de workspace de VS Code
+*.sublime-project  # Sublime Text
+*.sublime-workspace # Sublime Text
+*.tmproj           # TextMate
+*.komodoproject    # Komodo IDE
+*.project          # Eclipse
+*.classpath        # Eclipse
+*.buildpath        # Eclipse
+.project           # Otros IDEs
+
+# Archivos de Bases de Datos
+*.db
+*.sqlite
+*.sqlite3
+*.sql # Si son exports de DB, ignóralos. Si son migraciones, inclúyelos.
+
+# Archivos de compilación (si tu proyecto tuviera)
+*.o
+*.obj
+*.exe
+*.dll
+*.so
+*.out
+*.a
+*.lib
+*.bin
+target/ # Para proyectos Rust o Maven
+build/  # Para proyectos Java, C++, Android, etc.
+
+# Archivos de respaldo y temporales
+*~
+*.bak
+*.swp
+*.swo
+*.tmp
+*.temp
+
+# Archivos generados por sistemas de testing o CI/CD (si aplica)
+.cache/
+.nyc_output/
+coverage/
+
+# Archivos de configuración de Docker
+.dockerignore # Ya es un .dockerignore, no necesitas ignorarlo en gitignore.
+docker-compose.override.yml # Si tienes un override local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Archivos generados por frontend frameworks/herramientas (React, Angular, Vue, etc.)
+dist/
+build/
+.next/ # Next.js
+.nuxt/ # Nuxt.js
+out/   # Gatsby
+public/ # A veces el directorio de salida, si no quieres versionar los assets compilados
+temp/

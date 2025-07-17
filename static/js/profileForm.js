@@ -1,3 +1,5 @@
+import { firestoreService } from './firestore-service.js'; // se agrega la importación del servicio Firestore porque daba un error al guardar el CV.
+
 class MultiStepForm {
     constructor() {
         this.currentStep = 1;
@@ -33,6 +35,7 @@ class MultiStepForm {
         this.initSkillsInput();
         this.loadFormData();
         this.addInitialSections();
+        this.updateStepVisibility(); //agregado para mostrar la sección correcta al cargar el formulario
     }
 
     addInitialSections() {
@@ -149,7 +152,8 @@ class MultiStepForm {
         localStorage.setItem('multiStepFormSkills', JSON.stringify(this.selectedSkills));
     }
 
-    loadFormData() {
+loadFormData() {
+    try {
         const savedData = localStorage.getItem('multiStepFormData');
         const savedSkills = localStorage.getItem('multiStepFormSkills');
 
@@ -161,11 +165,11 @@ class MultiStepForm {
                     if (element) {
                         if (element.type === 'checkbox') {
                             element.checked = this.formData[key];
+                            // Trigger change event for checkboxes
+                            element.dispatchEvent(new Event('change'));
                         } else {
                             element.value = this.formData[key];
                         }
-                        element.disabled = false;
-                        element.readOnly = false;
                     }
                 });
             }, 100);
@@ -178,7 +182,13 @@ class MultiStepForm {
                 this.updateHiddenSkillsInput();
             }, 100);
         }
+    } catch (error) {
+        console.error('Error cargando datos guardados:', error);
+        // Limpiar datos corruptos
+        localStorage.removeItem('multiStepFormData');
+        localStorage.removeItem('multiStepFormSkills');
     }
+}
 
     initSkillsInput() {
         const skillInput = document.getElementById('skillInput');
@@ -253,13 +263,14 @@ class MultiStepForm {
     }
 
     addSkill(skill) {
-        if (!this.selectedSkills.includes(skill)) {
-            this.selectedSkills.push(skill);
-            this.renderSkills();
-            this.updateHiddenSkillsInput();
-            this.saveFormData();
-        }
+    const trimmedSkill = skill.trim();
+    if (trimmedSkill && !this.selectedSkills.includes(trimmedSkill)) {
+        this.selectedSkills.push(trimmedSkill);
+        this.renderSkills();
+        this.updateHiddenSkillsInput();
+        this.saveFormData();
     }
+}
 
     removeSkill(skill) {
         this.selectedSkills = this.selectedSkills.filter(s => s !== skill);
@@ -286,6 +297,57 @@ class MultiStepForm {
         if (!hiddenInput) return;
         hiddenInput.value = this.selectedSkills.join(',');
         this.validateField(hiddenInput);
+    }
+
+     resetValidation() { //agregado porque en la consola aparecía un error de validación al cargar el formulario
+        const currentSection = document.querySelector(`.form-section[data-section="${this.currentStep}"]`);
+        if (!currentSection) return;
+
+        const inputs = currentSection.querySelectorAll('input, select, textarea');
+        inputs.forEach(input => {
+            input.classList.remove('is-invalid');
+            const errorElement = document.getElementById(`${input.id}Error`);
+            if (errorElement) {
+                errorElement.textContent = '';
+                errorElement.style.display = 'none';
+            }
+        });
+
+        
+    }
+
+     updateStepVisibility() { //agregado para mostrar la sección correcta al cargar el formulario
+        const formSections = document.querySelectorAll('.form-section');
+        formSections.forEach(section => {
+            const step = parseInt(section.dataset.section, 10);
+            if (step === this.currentStep) {
+                section.style.display = 'block'; // O 'flex', 'grid', según tu CSS
+            } else {
+                section.style.display = 'none';
+            }
+        });
+
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const progressBar = document.getElementById('progressBar');
+
+        if (this.currentStep === 1) {
+            prevBtn.style.display = 'none';
+        } else {
+            prevBtn.style.display = 'inline-block';
+        }
+
+        if (this.currentStep === this.totalSteps) {
+            nextBtn.textContent = 'Enviar';
+            nextBtn.innerHTML = 'Enviar <i class="fas fa-paper-plane"></i>';
+        } else {
+            nextBtn.textContent = 'Siguiente';
+            nextBtn.innerHTML = 'Siguiente <i class="fas fa-arrow-right"></i>';
+        }
+
+        // Actualizar la barra de progreso
+        const progress = (this.currentStep - 1) / (this.totalSteps - 1) * 100;
+        progressBar.style.width = `${progress}%`;
     }
 
     nextStep() {
@@ -505,13 +567,41 @@ class MultiStepForm {
     validateCurrentSection() {
         const currentSection = document.querySelector(`[data-section="${this.currentStep}"]`);
         if (!currentSection) return true;
+        
         const requiredFields = currentSection.querySelectorAll('[required]');
         let isValid = true;
+        
+        // Validar campos requeridos
         requiredFields.forEach(field => {
             if (!this.validateField(field)) {
                 isValid = false;
             }
         });
+        
+        // Validar rangos de fechas para experiencia
+        const experienciaStartFields = currentSection.querySelectorAll('input[name*="experiencia_inicio_"]');
+        experienciaStartFields.forEach(startField => {
+            const index = startField.name.split('_').pop();
+            const endField = currentSection.querySelector(`input[name="experiencia_fin_${index}"]`);
+            const currentCheckbox = currentSection.querySelector(`input[name="experiencia_actual_${index}"]`);
+            
+            if (endField && !this.validateDateRange(startField, endField, currentCheckbox)) {
+                isValid = false;
+            }
+        });
+        
+        // Validar rangos de fechas para educación
+        const educacionStartFields = currentSection.querySelectorAll('input[name*="educacion_inicio_"]');
+        educacionStartFields.forEach(startField => {
+            const index = startField.name.split('_').pop();
+            const endField = currentSection.querySelector(`input[name="educacion_fin_${index}"]`);
+            const currentCheckbox = currentSection.querySelector(`input[name="educacion_actual_${index}"]`);
+            
+            if (endField && !this.validateDateRange(startField, endField, currentCheckbox)) {
+                isValid = false;
+            }
+        });
+        
         return isValid;
     }
 
@@ -535,6 +625,11 @@ class MultiStepForm {
             isValid = false;
             message = 'Selecciona al menos una habilidad';
         }
+        // Validación de número de teléfono
+        else if (field.name === 'numeroTelefono' && value && !/^\d{7,15}$/.test(value.replace(/\s/g, ''))) {
+        isValid = false;
+        message = 'Ingresa un número de teléfono válido';
+}
 
         if (!isValid) {
             field.classList.add('is-invalid');
@@ -544,6 +639,24 @@ class MultiStepForm {
         }
         return isValid;
     }
+
+    validateDateRange(startField, endField, currentCheckbox) {
+    if (currentCheckbox && currentCheckbox.checked) {
+        return true; // Si es trabajo actual, no validar fecha fin
+    }
+    
+    const startDate = new Date(startField.value);
+    const endDate = new Date(endField.value);
+    
+    if (startField.value && endField.value && startDate > endDate) {
+        this.showValidationMessage(endField, 'La fecha de fin no puede ser anterior a la fecha de inicio');
+        endField.classList.add('is-invalid');
+        return false;
+    }
+    
+    this.clearValidation(endField);
+    return true;
+}
 
     clearValidation(field) {
         field.classList.remove('is-invalid');
@@ -562,14 +675,49 @@ class MultiStepForm {
         }
     }
 
-    submitForm() {
-        this.saveFormData();
-        console.log('Datos de la aplicación:', this.formData);
-        alert('¡Aplicación enviada exitosamente! Revisa la consola para ver los datos.');
-        localStorage.removeItem('multiStepFormData');
-        localStorage.removeItem('multiStepFormSkills');
-        window.location.href = "/";
+async submitForm() {
+    if (this.isTransitioning) return;
+    this.isTransitioning = true;
+
+    this.saveFormData(this.currentStep);
+
+    // Limpiar formData: eliminar campos con valores de cadena vacíos y CLAVES VACÍAS
+    const dataToSave = {};
+    for (const key in this.formData) {
+        const value = this.formData[key];
+        
+        // ¡CAMBIO CLAVE AQUÍ! Añadir 'key !== ""'
+        if (key !== "" && value !== "" && value !== null && value !== undefined) {
+            // Si es un array, asegura que no esté vacío si esperas contenido
+            if (Array.isArray(value) && value.length === 0) {
+                continue; // Saltar arrays vacíos si no quieres almacenarlos
+            }
+            dataToSave[key] = value;
+        }
     }
+
+    try {
+        // Asegúrate de tener un userId válido aquí (por ejemplo, del usuario autenticado)
+        const userId = "aBUQPP1SFha0RSl2ElwrYkcMJNn2"; // Reemplaza esto con el ID de usuario real de Firebase Auth
+        const result = await firestoreService.saveUserCV(userId, dataToSave);
+
+        if (result.success) {
+            console.log('CV guardado exitosamente:', result.id);
+            this.currentStep++;
+            this.updateProgress();
+            this.updateStepVisibility();
+            this.resetValidation();
+        } else {
+            console.error('Error al guardar el CV:', result.error);
+            alert(`Error al enviar el formulario: ${result.error}`);
+        }
+    } catch (error) {
+        console.error('Error en submitForm:', error);
+        alert(`Ocurrió un error inesperado: ${error.message}`);
+    } finally {
+        this.isTransitioning = false;
+    }
+}
 
     addDynamicSection(type, containerId, content, limit = null) {
         if (limit && this.counters[type] >= limit) {
