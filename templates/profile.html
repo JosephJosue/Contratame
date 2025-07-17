@@ -1,0 +1,202 @@
+{% extends 'layout.html' %}
+
+<!--Page title-->
+{% block title %}Crear Cuenta{% endblock %}
+
+<!--Specific CSS code-->
+{% block css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+{% endblock %}
+
+<!--Main content block-->
+{% block content %}
+<div class="profile-page">
+    <!-- Profile Header -->
+    <section class="profile-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center">
+                    <img src="/placeholder.svg?height=120&width=120" alt="Profile Picture" class="profile-avatar" id="profileAvatar">
+                    <h1 class="profile-name">Profile name</h1>
+                    <p class="profile-title">Profile title</p>
+                    <p class="profile-location">
+                        <i class="fas fa-map-marker-alt me-2"></i>
+                        Map location
+                    </p>
+
+                    <div class="availability-status available">
+                        <span class="status-dot"></span>
+                        Profile job status
+                    </div>
+
+                    <div class="profile-actions">
+                        <button class="btn btn-primary btn-lg me-3">
+                            <i class="fas fa-download me-2"></i>Download Resume
+                        </button>
+                        <button class="btn btn-outline-light btn-lg">
+                            <i class="fas fa-envelope me-2"></i>Contact Me
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Profile Content -->
+    <div class="container profile-content">
+        <div class="row">
+            <!-- Left Column -->
+            <div class="col-lg-8">
+                <!-- About Section -->
+                <div class="profile-card fade-in">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-user"></i>
+                            About Me
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <p class="about-text">
+
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Skills Section -->
+                <div class="profile-card fade-in">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-code"></i>
+                            Skills & Expertise
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="skills-container">
+                            <span class="skill-tag">JavaScript</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Experience Section -->
+                <div class="profile-card fade-in">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-briefcase"></i>
+                            Work Experience
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="experience-item">
+                            <h4 class="experience-company"></h4>
+                            <h5 class="experience-position"></h5>
+                            <p class="experience-duration"></p>
+                            <p class="experience-description">
+
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="col-lg-4">
+                <!-- Contact Information -->
+                <div class="profile-card slide-in-right">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-address-card"></i>
+                            Contact Information
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <ul class="contact-info">
+                            <li>
+                                <div class="contact-icon">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                                <div class="contact-details">
+                                    <span class="contact-label">Email</span>
+                                    <span class="contact-value">mailto@email.com</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="contact-icon">
+                                    <i class="fas fa-phone"></i>
+                                </div>
+                                <div class="contact-details">
+                                    <span class="contact-label">Phone</span>
+                                    <span class="contact-value">+1 (555) 123-4567</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="contact-icon">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                                <div class="contact-details">
+                                    <span class="contact-label">Location</span>
+                                    <span class="contact-value">San Francisco, CA</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="contact-icon">
+                                    <i class="fas fa-globe"></i>
+                                </div>
+                                <div class="contact-details">
+                                    <span class="contact-label">Website</span>
+                                    <span class="contact-value">www.example.dev</span>
+                                </div>
+                            </li>
+                        </ul>
+
+                        <div class="social-links">
+                            <a href="#" class="social-link" title="LinkedIn">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                            <a href="#" class="social-link" title="GitHub">
+                                <i class="fab fa-github"></i>
+                            </a>
+                            <a href="#" class="social-link" title="Twitter">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="#" class="social-link" title="Portfolio">
+                                <i class="fas fa-globe"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Education Section -->
+                <div class="profile-card slide-in-right">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-graduation-cap"></i>
+                            Education
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="experience-item">
+                            <h4 class="experience-company">Institution</h4>
+                            <h5 class="experience-position">Degree</h5>
+                            <p class="experience-duration">Duration</p>
+                            <p class="experience-description">
+                               Description
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Edit Button -->
+    <button class="edit-profile-btn" id="editProfileBtn" title="Edit Profile">
+        <i class="fas fa-edit"></i>
+    </button>
+</div>
+{% endblock %}
+
+<!--Specific JavaScript code-->
+{% block js %}
+    <script type="module" src="{{ url_for('static', filename='js/profile.js') }}"></script>
+{% endblock %}
+
