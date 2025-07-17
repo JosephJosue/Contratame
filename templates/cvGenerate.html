@@ -1,21 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CV Builder</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
-    <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
-</head>
-<body>
-    <div class="container">
+{% extends 'layout.html' %}
+
+<!--Page title-->
+{% block title %}Titulo{% endblock %}
+
+<!--Specific CSS code-->
+{% block css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/cvGenerate.css') }}">
+{% endblock %}
+
+<!--Main content block-->
+{% block content %}
+<div class="container">
         <!-- Form Section - Left Side -->
         <div class="form-section">
             <div class="form-header">
                 <h1>CV Builder</h1>
                 <p>Fill in your information to create your professional CV</p>
             </div>
-            
+
             <form id="cv-form" class="cv-form">
                 <!-- Personal Information -->
                 <div class="form-card">
@@ -130,7 +132,7 @@
             <div class="preview-header">
                 <h2>CV Preview</h2>
             </div>
-            
+
             <div id="cv-preview" class="cv-preview">
                 <!-- Header -->
                 <div class="cv-header">
@@ -171,5 +173,10 @@
             </div>
         </div>
     </div>
-</body>
-</html>
+{% endblock %}
+
+<!--Specific JavaScript code-->
+{% block js %}
+    <script type="module" src="{{ url_for('static', filename='js/cvGenerate')}}"></script>
+{% endblock %}
+
