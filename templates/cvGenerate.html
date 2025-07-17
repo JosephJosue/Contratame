@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV Builder</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+    <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Form Section - Left Side -->
+        <div class="form-section">
+            <div class="form-header">
+                <h1>CV Builder</h1>
+                <p>Fill in your information to create your professional CV</p>
+            </div>
+            
+            <form id="cv-form" class="cv-form">
+                <!-- Personal Information -->
+                <div class="form-card">
+                    <h3>Personal Information</h3>
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" placeholder="Enter your full name">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone</label>
+                        <input type="text" id="phone" placeholder="Enter your phone number">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" placeholder="Enter your email address">
+                    </div>
+                    <div class="form-group">
+                        <label for="location">Location</label>
+                        <input type="text" id="location" placeholder="Enter your location">
+                    </div>
+                    <div class="form-group">
+                        <label>Websites (Optional)</label>
+                        <input type="text" id="website1" placeholder="Website 1">
+                        <input type="text" id="website2" placeholder="Website 2">
+                    </div>
+                </div>
+
+                <!-- Professional Profile -->
+                <div class="form-card">
+                    <h3>Professional Profile</h3>
+                    <div class="form-group">
+                        <textarea id="professionalProfile" placeholder="Write a brief summary of your professional profile..." rows="4"></textarea>
+                    </div>
+                </div>
+
+                <!-- Experience -->
+                <div class="form-card">
+                    <div class="card-header">
+                        <h3>Experience</h3>
+                        <button type="button" class="add-btn" onclick="addExperience()">+ Add Experience</button>
+                    </div>
+                    <div id="experience-container"></div>
+                </div>
+
+                <!-- Education -->
+                <div class="form-card">
+                    <div class="card-header">
+                        <h3>Education</h3>
+                        <button type="button" class="add-btn" onclick="addEducation()">+ Add Education</button>
+                    </div>
+                    <div id="education-container"></div>
+                </div>
+
+                <!-- Achievements -->
+                <div class="form-card">
+                    <div class="card-header">
+                        <h3>Achievements</h3>
+                        <button type="button" class="add-btn" onclick="addAchievement()">+ Add Achievement</button>
+                    </div>
+                    <div id="achievements-container"></div>
+                </div>
+
+                <!-- Languages -->
+                <div class="form-card">
+                    <div class="card-header">
+                        <h3>Languages</h3>
+                        <button type="button" class="add-btn" onclick="addLanguage()">+ Add Language</button>
+                    </div>
+                    <div id="languages-container"></div>
+                </div>
+
+                <!-- References -->
+                <div class="form-card">
+                    <div class="card-header">
+                        <h3>References</h3>
+                        <button type="button" class="add-btn" onclick="addReference()">+ Add Reference</button>
+                    </div>
+                    <div id="references-container"></div>
+                </div>
+
+                <!-- Certifications -->
+                <div class="form-card">
+                    <div class="card-header">
+                        <h3>Courses & Certifications</h3>
+                        <button type="button" class="add-btn" onclick="addCertification()">+ Add Certification</button>
+                    </div>
+                    <div id="certifications-container"></div>
+                </div>
+
+                <!-- Skills -->
+                <div class="form-card">
+                    <div class="card-header">
+                        <h3>Skills</h3>
+                        <button type="button" class="add-btn" onclick="addSkill()">+ Add Skill</button>
+                    </div>
+                    <div id="skills-container"></div>
+                </div>
+
+                <!-- Core Strengths -->
+                <div class="form-card">
+                    <div class="card-header">
+                        <h3>Core Strengths</h3>
+                        <button type="button" class="add-btn" onclick="addCoreStrength()">+ Add Strength</button>
+                    </div>
+                    <div id="core-strengths-container"></div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Preview Section - Right Side -->
+        <div class="preview-section">
+            <div class="preview-header">
+                <h2>CV Preview</h2>
+            </div>
+            
+            <div id="cv-preview" class="cv-preview">
+                <!-- Header -->
+                <div class="cv-header">
+                    <h1 id="preview-name" class="cv-name">Your Name</h1>
+                    <div class="cv-divider">
+                        <div class="contact-info">
+                            <span id="preview-phone"></span>
+                            <span id="preview-email"></span>
+                            <span id="preview-location"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Body -->
+                <div class="cv-body">
+                    <!-- Left Column -->
+                    <div class="cv-left-column">
+                        <div id="preview-professional-profile" class="cv-section"></div>
+                        <div id="preview-websites" class="cv-section"></div>
+                        <div id="preview-core-strengths" class="cv-section"></div>
+                        <div id="preview-skills" class="cv-section"></div>
+                        <div id="preview-languages" class="cv-section"></div>
+                        <div id="preview-references" class="cv-section"></div>
+                    </div>
+
+                    <!-- Right Column -->
+                    <div class="cv-right-column">
+                        <div id="preview-experience" class="cv-section"></div>
+                        <div id="preview-education" class="cv-section"></div>
+                        <div id="preview-certifications" class="cv-section"></div>
+                        <div id="preview-achievements" class="cv-section"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="download-container">
+                <button id="download-btn" class="download-btn">📄 Download PDF</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
