@@ -1,0 +1,90 @@
+{% extends 'layout.html' %}
+
+{% block title %}Crear Cuenta{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login-register.css') }}">
+{% endblock %}
+
+{% block content %}
+    <div class="login-container">
+        <div class="login-card">
+            <div class="row g-0">
+                <div class="col-md-6">
+                    <div class="left-panel">
+                        <div class="image-placeholder">
+                            <img src="{{ url_for('static', filename='svg/free-technologies.svg') }}">
+                        </div>
+                        <div class="carousel-container">
+                            <div class="carousel-wrapper">
+                                <div class="carousel-track" id="carouselTrack">
+                                    <div class="carousel-slide">
+                                        <p class="carousel-text">Crea un perfil que destaque tus habilidades y experiencia.</p>
+                                    </div>
+                                    <div class="carousel-slide">
+                                        <p class="carousel-text">Aplica a las mejores ofertas de trabajo con un solo clic.</p>
+                                    </div>
+                                    <div class="carousel-slide">
+                                        <p class="carousel-text">Recibe notificaciones sobre nuevas oportunidades laborales.</p>
+                                    </div>
+                                    <div class="carousel-slide">
+                                        <p class="carousel-text">Conecta con reclutadores y amplía tu red profesional.</p>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="right-panel">
+
+                        <h2 class="login-title">Crear Cuenta</h2>
+
+                        <form id="registerForm">
+                            <div class="input-group">
+                                <i class="fas fa-user input-icon"></i>
+                                <input type="text" class="form-control" id="name" name="name" placeholder="Nombre completo" required>
+                            </div>
+
+                            <div class="input-group">
+                                <i class="fas fa-envelope input-icon"></i>
+                                <input type="email" class="form-control" id="email" name="email" placeholder="Correo electrónico" required>
+                            </div>
+
+                            <div class="input-group">
+                                <i class="fas fa-lock input-icon"></i>
+                                <input type="password" class="form-control" id="password" name="password" placeholder="Contraseña" required>
+                            </div>
+
+                            <div class="input-group">
+                                <i class="fas fa-lock input-icon"></i>
+                                <input type="password" class="form-control" id="confirm-password" name="confirm-password" placeholder="Confirmar contraseña" required>
+                            </div>
+
+                            <button type="submit" class="btn login-btn w-100" id="signup">Registrarse</button>
+                        </form>
+
+                        <p class="register-text">
+                            ¿Ya tienes una cuenta? <a href="{{ url_for('login') }}" class="register-link">Inicia Sesión</a>
+                        </p>
+
+                        <div class="social-login">
+                            <a href="#" class="social social-btn google-btn" id="googleLogin">
+                                <i class="fab fa-google"></i>
+                            </a>
+                            <a href="#" class="social-btn linkedin-btn" id="linkedinLogin">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script type="module" src="{{ url_for('static', filename='js/register.js') }}"></script>
+{% endblock %}
+

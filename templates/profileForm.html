@@ -1,0 +1,317 @@
+{% extends 'layout.html' %}
+
+<!--Page title-->
+{% block title %}Formulario de perfil{% endblock %}
+
+<!--Specific CSS code-->
+{% block css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/profileForm.css') }}">
+{% endblock %}
+
+<!--Main content block-->
+{% block content %}
+    <div class="form-container">
+        <div class="form-card">
+            <div class="form-header">
+                <div class="step-indicator">
+                    <div class="step active" data-step="1"></div>
+                    <div class="step" data-step="2"></div>
+                    <div class="step" data-step="3"></div>
+                    <div class="step" data-step="4"></div>
+                    <div class="step" data-step="5"></div>
+                    <div class="step" data-step="6"></div>
+                    <div class="step" data-step="7"></div>
+                    <div class="step" data-step="8"></div>
+                    <div class="step" data-step="9"></div>
+                    <div class="step" data-step="10"></div>
+                </div>
+                <h1>Formulario de Aplicación</h1>
+                <p>Completa tu información profesional paso a paso</p>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="progressBar"></div>
+                </div>
+            </div>
+
+            <div class="form-content">
+                <div class="form-body">
+                    <form id="multiStepForm">
+                        <div class="form-sections-container">
+                            <!-- Sección 1: Nombre Completo -->
+                            <div class="form-section active" data-section="1">
+                                <h2 class="section-title">
+                                    <i class="fas fa-user"></i>
+                                    Información Personal
+                                </h2>
+                                <p class="section-subtitle">
+                                    Comencemos con tu información básica.
+                                </p>
+
+                                <div class="form-group">
+                                    <label for="nombreCompleto" class="form-label">Nombre Completo *</label>
+                                    <div class="input-group">
+                                        <i class="fas fa-user input-icon"></i>
+                                        <input type="text" class="form-control" id="nombreCompleto" name="nombreCompleto"
+                                               placeholder="Tu nombre completo" required>
+                                    </div>
+                                    <div class="validation-message" id="nombreCompletoError"></div>
+                                </div>
+                            </div>
+
+                            <!-- Sección 2: Información de Contacto -->
+                            <div class="form-section" data-section="2">
+                                <h2 class="section-title">
+                                    <i class="fas fa-address-book"></i>
+                                    Información de Contacto
+                                </h2>
+                                <p class="section-subtitle">
+                                    Proporciona tus datos de contacto para que podamos comunicarnos contigo.
+                                </p>
+
+                                <div class="form-group">
+                                    <label class="form-label">Teléfono *</label>
+                                    <div class="input-group">
+                                        <i class="fas fa-phone input-icon"></i>
+                                        <div class="phone-input-container">
+                                            <select class="form-select country-code-select" id="codigoPais" name="codigoPais" required>
+                                                <option value="+1">🇺🇸 +1</option>
+                                                <option value="+52">🇲🇽 +52</option>
+                                                <option value="+34">🇪🇸 +34</option>
+                                                <option value="+54">🇦🇷 +54</option>
+                                                <option value="+57">🇨🇴 +57</option>
+                                                <option value="+51">🇵🇪 +51</option>
+                                                <option value="+56">🇨🇱 +56</option>
+                                                <option value="+58">🇻🇪 +58</option>
+                                                <option value="+593">🇪🇨 +593</option>
+                                                <option value="+591">🇧🇴 +591</option>
+                                                <option value="+595">🇵🇾 +595</option>
+                                                <option value="+507">🇵🇦 +507</option>
+                                                <option value="+598">🇺🇾 +598</option>
+                                                <option value="+55">🇧🇷 +55</option>
+                                                <option value="+44">🇬🇧 +44</option>
+                                                <option value="+33">🇫🇷 +33</option>
+                                                <option value="+49">🇩🇪 +49</option>
+                                                <option value="+39">🇮🇹 +39</option>
+                                                <option value="+351">🇵🇹 +351</option>
+                                            </select>
+                                            <input type="tel" class="form-control phone-number-input" id="numeroTelefono" name="numeroTelefono"
+                                                   placeholder="123 456 7890" required>
+                                        </div>
+                                    </div>
+                                    <div class="validation-message" id="numeroTelefonoError"></div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="email" class="form-label">Correo Electrónico *</label>
+                                    <div class="input-group">
+                                        <i class="fas fa-envelope input-icon"></i>
+                                        <input type="email" class="form-control" id="email" name="email"
+                                               placeholder="tu@email.com" required>
+                                    </div>
+                                    <div class="validation-message" id="emailError"></div>
+                                </div>
+
+                                <div id="portafolioContainer">
+                                    <!-- Dynamic portfolio sections will be added here -->
+                                </div>
+
+                                <button type="button" class="add-section-btn" data-action="addPortafolio">
+                                    <i class="fas fa-plus"></i>
+                                    Agregar otro portafolio
+                                </button>
+
+                                <div class="form-group">
+                                    <label for="ubicacion" class="form-label">Ubicación *</label>
+                                    <div class="input-group">
+                                        <i class="fas fa-map-marker-alt input-icon"></i>
+                                        <input type="text" class="form-control" id="ubicacion" name="ubicacion"
+                                               placeholder="Ciudad, País" required>
+                                    </div>
+                                    <div class="validation-message" id="ubicacionError"></div>
+                                </div>
+                            </div>
+
+                            <!-- Sección 3: Descripción -->
+                            <div class="form-section" data-section="3">
+                                <h2 class="section-title">
+                                    <i class="fas fa-file-alt"></i>
+                                    Descripción Personal
+                                </h2>
+                                <p class="section-subtitle">
+                                    Cuéntanos por qué eres el candidato ideal para este puesto.
+                                </p>
+
+                                <div class="form-group">
+                                    <label for="descripcion" class="form-label">¿Por qué eres el candidato ideal? *</label>
+                                    <textarea class="form-control" id="descripcion" name="descripcion" rows="6"
+                                              placeholder="Explica brevemente tus fortalezas, motivaciones y por qué encajas perfectamente en este rol..." required></textarea>
+                                    <div class="validation-message" id="descripcionError"></div>
+                                </div>
+                            </div>
+
+                            <!-- Sección 4: Experiencia -->
+                            <div class="form-section" data-section="4">
+                                <h2 class="section-title">
+                                    <i class="fas fa-history"></i>
+                                    Experiencia Profesional
+                                </h2>
+                                <p class="section-subtitle">
+                                    Comparte tu experiencia laboral más relevante.
+                                </p>
+
+                                <div id="experienciaContainer">
+                                    <!-- Dynamic sections will be added here -->
+                                </div>
+
+                                <button type="button" class="add-section-btn" data-action="addExperiencia">
+                                    <i class="fas fa-plus"></i>
+                                    Agregar otra experiencia
+                                </button>
+                            </div>
+
+                            <!-- Sección 5: Educación -->
+                            <div class="form-section" data-section="5">
+                                <h2 class="section-title">
+                                    <i class="fas fa-graduation-cap"></i>
+                                    Educación
+                                </h2>
+                                <p class="section-subtitle">
+                                    Comparte tu formación académica más relevante.
+                                </p>
+
+                                <div id="educacionContainer">
+                                    <!-- Dynamic sections will be added here -->
+                                </div>
+
+                                <button type="button" class="add-section-btn" data-action="addEducacion">
+                                    <i class="fas fa-plus"></i>
+                                    Agregar otra educación
+                                </button>
+                            </div>
+
+                            <!-- Sección 6: Idiomas -->
+                            <div class="form-section" data-section="6">
+                                <h2 class="section-title">
+                                    <i class="fas fa-language"></i>
+                                    Idiomas
+                                </h2>
+                                <p class="section-subtitle">
+                                    Indica los idiomas que dominas y tu nivel de competencia.
+                                </p>
+
+                                <div id="idiomasContainer">
+                                    <!-- Dynamic sections will be added here -->
+                                </div>
+
+                                <button type="button" class="add-section-btn" data-action="addIdioma">
+                                    <i class="fas fa-plus"></i>
+                                    Agregar otro idioma
+                                </button>
+                            </div>
+
+                            <!-- Sección 7: Logros -->
+                            <div class="form-section" data-section="7">
+                                <h2 class="section-title">
+                                    <i class="fas fa-trophy"></i>
+                                    Logros
+                                </h2>
+                                <p class="section-subtitle">
+                                    Comparte tus logros más destacados y reconocimientos.
+                                </p>
+
+                                <div id="logrosContainer">
+                                    <!-- Dynamic sections will be added here -->
+                                </div>
+
+                                <button type="button" class="add-section-btn" data-action="addLogro">
+                                    <i class="fas fa-plus"></i>
+                                    Agregar otro logro
+                                </button>
+                            </div>
+
+                            <!-- Sección 8: Habilidades -->
+                            <div class="form-section" data-section="8">
+                                <h2 class="section-title">
+                                    <i class="fas fa-cogs"></i>
+                                    Habilidades
+                                </h2>
+                                <p class="section-subtitle">
+                                    Agrega las habilidades que mejor te describen profesionalmente.
+                                </p>
+
+                                <div class="form-group">
+                                    <label class="form-label">Agregar Habilidad *</label>
+                                    <div class="skill-input-container">
+                                        <div class="input-group">
+                                            <i class="fas fa-search input-icon"></i>
+                                            <input type="text" class="form-control" id="skillInput"
+                                                   placeholder="Escribe una habilidad y presiona Enter">
+                                        </div>
+                                        <div class="skill-suggestions" id="skillSuggestions"></div>
+                                    </div>
+
+                                    <div class="skills-container" id="skillsContainer"></div>
+                                    <input type="hidden" id="habilidades" name="habilidades" required>
+                                    <div class="validation-message" id="habilidadesError"></div>
+                                </div>
+                            </div>
+
+                            <!-- Sección 9: Cursos -->
+                            <div class="form-section" data-section="9">
+                                <h2 class="section-title">
+                                    <i class="fas fa-book"></i>
+                                    Cursos y Certificaciones
+                                </h2>
+                                <p class="section-subtitle">
+                                    Comparte tus cursos más relevantes y fechas de realización.
+                                </p>
+
+                                <div id="cursosContainer">
+                                    <!-- Dynamic sections will be added here -->
+                                </div>
+
+                                <button type="button" class="add-section-btn" data-action="addCurso">
+                                    <i class="fas fa-plus"></i>
+                                    Agregar otro curso
+                                </button>
+                            </div>
+
+                            <!-- Sección 10: Preview -->
+                            <div class="form-section" data-section="10">
+                                <h2 class="section-title">
+                                    <i class="fas fa-eye"></i>
+                                    Revisión Final
+                                </h2>
+                                <p class="section-subtitle">
+                                    Revisa toda tu información antes de enviar la aplicación. Puedes editar cualquier sección si es necesario.
+                                </p>
+
+                                <div id="previewContainer">
+                                    <!-- El contenido del preview se generará dinámicamente -->
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="form-navigation">
+                    <button type="button" class="btn-nav btn-secondary" id="prevBtn" style="display: none;">
+                        <i class="fas fa-arrow-left"></i>
+                        Anterior
+                    </button>
+
+                    <div class="flex-grow-1"></div>
+
+                    <button type="button" class="btn-nav btn-primary" id="nextBtn">
+                        Siguiente
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+<!--Specific JavaScript code-->
+{% block js %}
+    <script type="module" src="{{ url_for('static', filename='js/profileForm.js') }}"></script>
+{% endblock %}
