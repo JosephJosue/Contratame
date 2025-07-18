@@ -1242,12 +1242,12 @@ function autofillMyCV() {
       ""
     ]
   },
-  "professionalProfile": "<p>Poseo habilidades para el aprendizaje profundo y aplicado en áreas tanto técnicas como de gestión[cite: 4]. [cite_start]Cuento con experiencia en la comunicación efectiva de ideas, así como en la interacción con diversas personas y equipos[cite: 5]. [cite_start]Me adapto con facilidad a distintos entornos de trabajo y desafío[cite: 6]. [cite_start]He participado en la conceptualización y desarrollo de proyectos, abarcando desde la toma de decisiones estratégicas hasta la ejecución técnica directa[cite: 7].</p>",
+  "professionalProfile": "<p>Poseo habilidades para el aprendizaje profundo y aplicado en áreas tanto técnicas como de gestión. Cuento con experiencia en la comunicación efectiva de ideas, así como en la interacción con diversas personas y equipos. Me adapto con facilidad a distintos entornos de trabajo y desafío. He participado en la conceptualización y desarrollo de proyectos, abarcando desde la toma de decisiones estratégicas hasta la ejecución técnica directa.</p>",
   "experience": [
     {
       "jobTitle": "Asistente estudiantil",
       "companyName": "Odyssey Labs - Universidad Interamericana de Panamá",
-      "jobDescription": "<ul><li>Mentor y facilitador para más de 10 estudiantes del programa PISTA del SENACYT, apoyando su desarrollo académico y profesional [cite: 19][cite_start].</li><li>Asistente técnico en la instalación de 24 puntos de acceso con códigos QR y electromagnetos en puertas del campus, facilitando el control de asistencia de profesores y mejorando la seguridad en la Universidad Interamericana de Panamá [cite: 20][cite_start].</li><li>Brindé soporte técnico en la cobertura de más de 7 eventos universitarios, asegurando el correcto funcionamiento de los sistemas tecnológicos y la generación de contenido para redes[cite: 21].</li></ul>",
+      "jobDescription": "<ul><li>Mentor y facilitador para más de 10 estudiantes del programa PISTA del SENACYT, apoyando su desarrollo académico y profesional.</li><li>Asistente técnico en la instalación de 24 puntos de acceso con códigos QR y electromagnetos en puertas del campus, facilitando el control de asistencia de profesores y mejorando la seguridad en la Universidad Interamericana de Panamá.</li><li>Brindé soporte técnico en la cobertura de más de 7 eventos universitarios, asegurando el correcto funcionamiento de los sistemas tecnológicos y la generación de contenido para redes.</li></ul>",
       "country": "Panamá",
       "startDate": { "month": "August", "year": "2023" },
       "endDate": { "month": "April", "year": "2025" },
@@ -1256,7 +1256,7 @@ function autofillMyCV() {
     {
       "jobTitle": "Encargado de Tecnología",
       "companyName": "CODEM - Centro Educativo Stella Sierra",
-      "jobDescription": "<ul><li>Diseño, implementación y lanzamiento de un sitio web funcional para apoyar la difusión y operación del proyecto [cite: 27][cite_start].</li><li>Contribución al desarrollo del interés y participación en los objetivos del proyecto en más de 23 estudiantes jóvenes[cite: 28].</li></ul>",
+      "jobDescription": "<ul><li>Diseño, implementación y lanzamiento de un sitio web funcional para apoyar la difusión y operación del proyecto.</li><li>Contribución al desarrollo del interés y participación en los objetivos del proyecto en más de 23 estudiantes jóvenes.</li></ul>",
       "country": "Panamá",
       "startDate": { "month": "January", "year": "2025" },
       "endDate": { "month": "June", "year": "2025" },
@@ -1284,11 +1284,11 @@ function autofillMyCV() {
   "achievements": [
     {
       "title": "Semifinalista - Huawei Seeds for the Future 2024",
-      "description": "Destacado por habilidades en trabajo colaborativo, liderazgo de proyectos y comunicación efectiva de ideas en un entorno multicultural y tecnológico de alto nivel[cite: 10]."
+      "description": "Destacado por habilidades en trabajo colaborativo, liderazgo de proyectos y comunicación efectiva de ideas en un entorno multicultural y tecnológico de alto nivel."
     },
     {
       "title": "Egresado - Laboratorio Latinoamericano de Acción Ciudadana (LLAC) 2025",
-      "description": "Formación en planificación estratégica para proyectos de impacto ciudadano[cite: 12]. [cite_start]Participación activa en la evaluación de ideas, coordinación de equipos, y fortalecimiento de habilidades de resiliencia y trabajo colaborativo[cite: 12]."
+      "description": "Formación en planificación estratégica para proyectos de impacto ciudadano. Participación activa en la evaluación de ideas, coordinación de equipos, y fortalecimiento de habilidades de resiliencia y trabajo colaborativo."
     }
   ],
   "languages": [
