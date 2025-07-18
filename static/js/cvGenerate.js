@@ -35,32 +35,32 @@ const editors = {}
 
 // Constants
 const months = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
+  "Enero",
+  "Febrero",
+  "Marzo",
+  "Abril",
+  "Mayo",
+  "Junio",
+  "Julio",
+  "Agosto",
+  "Septiembre",
+  "Octubre",
+  "Noviembre",
+  "Diciembre",
 ]
 
 const years = Array.from({ length: 50 }, (_, i) => (new Date().getFullYear() - i).toString())
 
 const languageLevels = [
-  "Native or Proficient (C2)",
-  "Advanced (C1)",
-  "Upper Intermediate (B2)",
-  "Intermediate (B1)",
-  "Elementary (A2)",
-  "Beginner (A1)",
+  "Nativo (C2)",
+  "Avanzado (C1)",
+  "Intermedia superior (B2)",
+  "Intermedio (B1)",
+  "Elemental (A2)",
+  "Principiante (A1)",
 ]
 
-const skillLevels = ["Beginner", "Intermediate", "Advanced", "Expert"]
+const skillLevels = ["Principante", "Intermedio", "Avanzado", "Experto"]
 
 // Import Quill library
 const Quill = window.Quill
@@ -321,7 +321,7 @@ function createSelect(options, selectedValue = "", onChange = null) {
 function formatDate(startDate, endDate, isCurrent = false, isEnrolled = false) {
   const start = startDate.month && startDate.year ? `${startDate.month} ${startDate.year}` : ""
   const end =
-    isCurrent || isEnrolled ? "Present" : endDate.month && endDate.year ? `${endDate.month} ${endDate.year}` : ""
+    isCurrent || isEnrolled ? "Actualmente" : endDate.month && endDate.year ? `${endDate.month} ${endDate.year}` : ""
   return start && end ? `${start} - ${end}` : start || end
 }
 
@@ -393,55 +393,55 @@ function renderExperience() {
     const div = document.createElement("div")
     div.className = "dynamic-item"
     div.innerHTML = `
-            <h4>Experience ${index + 1} <button type="button" class="remove-btn" onclick="removeExperience(${index})">Remove</button></h4>
+            <h4>Experiencia ${index + 1} <button type="button" class="remove-btn" onclick="removeExperience(${index})">Remover</button></h4>
             <div class="form-row">
                 <div class="form-group">
-                    <label>Job Title</label>
+                    <label>Título de trabajo</label>
                     <input type="text" value="${exp.jobTitle}" maxlength="60" onchange="updateExperience(${index}, 'jobTitle', this.value)">
                 </div>
                 <div class="form-group">
-                    <label>Company Name</label>
+                    <label>Nombre de la Compañía</label>
                     <input type="text" value="${exp.companyName}" maxlength="30" onchange="updateExperience(${index}, 'companyName', this.value)">
                 </div>
             </div>
             <div class="form-group">
-                <label>Job Description</label>
+                <label>Descripción del empleo</label>
                 <div id="experience-desc-editor-${index}" class="wysiwyg-editor"></div>
                 <textarea id="experience-desc-${index}" style="display: none;">${exp.jobDescription}</textarea>
             </div>
             <div class="form-group">
-                <label>Country</label>
+                <label>País</label>
                 <input type="text" value="${exp.country}" maxlength="20" onchange="updateExperience(${index}, 'country', this.value)">
             </div>
             <div class="date-row">
                 <div class="form-group">
-                    <label>Start Date</label>
+                    <label>Fecha de inicio</label>
                     <div class="date-inputs">
                         <select onchange="updateExperienceDate(${index}, 'startDate', 'month', this.value)">
-                            <option value="">Month</option>
+                            <option value="">Mes</option>
                             ${months.map((month) => `<option value="${month}" ${exp.startDate.month === month ? "selected" : ""}>${month}</option>`).join("")}
                         </select>
                         <select onchange="updateExperienceDate(${index}, 'startDate', 'year', this.value)">
-                            <option value="">Year</option>
+                            <option value="">Año</option>
                             ${years.map((year) => `<option value="${year}" ${exp.startDate.year === year ? "selected" : ""}>${year}</option>`).join("")}
                         </select>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label>End Date</label>
+                    <label>Fecha de finalización</label>
                     <div class="date-inputs">
                         <select onchange="updateExperienceDate(${index}, 'endDate', 'month', this.value)" ${exp.isCurrent ? "disabled" : ""}>
-                            <option value="">Month</option>
+                            <option value="">Mes</option>
                             ${months.map((month) => `<option value="${month}" ${exp.endDate.month === month ? "selected" : ""}>${month}</option>`).join("")}
                         </select>
                         <select onchange="updateExperienceDate(${index}, 'endDate', 'year', this.value)" ${exp.isCurrent ? "disabled" : ""}>
-                            <option value="">Year</option>
+                            <option value="">Año</option>
                             ${years.map((year) => `<option value="${year}" ${exp.endDate.year === year ? "selected" : ""}>${year}</option>`).join("")}
                         </select>
                     </div>
                     <div class="checkbox-group">
                         <input type="checkbox" id="current-${index}" ${exp.isCurrent ? "checked" : ""} onchange="updateExperience(${index}, 'isCurrent', this.checked)">
-                        <label for="current-${index}">Current job</label>
+                        <label for="current-${index}">Trabajo actualmente aquí</label>
                     </div>
                 </div>
             </div>
@@ -506,50 +506,50 @@ function renderEducation() {
     const div = document.createElement("div")
     div.className = "dynamic-item"
     div.innerHTML = `
-            <h4>Education ${index + 1} <button type="button" class="remove-btn" onclick="removeEducation(${index})">Remove</button></h4>
+            <h4>Educación ${index + 1} <button type="button" class="remove-btn" onclick="removeEducation(${index})">Remover</button></h4>
             <div class="form-row">
                 <div class="form-group">
-                    <label>Degree Title</label>
+                    <label>Nombre del Título</label>
                     <input type="text" value="${edu.title}" maxlength="100" onchange="updateEducation(${index}, 'title', this.value)">
                 </div>
                 <div class="form-group">
-                    <label>Institution Name</label>
+                    <label>Nombre de la Institución</label>
                     <input type="text" value="${edu.institutionName}" maxlength="100" onchange="updateEducation(${index}, 'institutionName', this.value)">
                 </div>
             </div>
             <div class="form-group">
-                <label>Country</label>
+                <label>País</label>
                 <input type="text" value="${edu.country}" maxlength="20" onchange="updateEducation(${index}, 'country', this.value)">
             </div>
             <div class="date-row">
                 <div class="form-group">
-                    <label>Start Date</label>
+                    <label>Fecha de Inicio</label>
                     <div class="date-inputs">
                         <select onchange="updateEducationDate(${index}, 'startDate', 'month', this.value)">
-                            <option value="">Month</option>
+                            <option value="">Mes</option>
                             ${months.map((month) => `<option value="${month}" ${edu.startDate.month === month ? "selected" : ""}>${month}</option>`).join("")}
                         </select>
                         <select onchange="updateEducationDate(${index}, 'startDate', 'year', this.value)">
-                            <option value="">Year</option>
+                            <option value="">Año</option>
                             ${years.map((year) => `<option value="${year}" ${edu.startDate.year === year ? "selected" : ""}>${year}</option>`).join("")}
                         </select>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label>End Date</label>
+                    <label>Fecha de Finalización</label>
                     <div class="date-inputs">
                         <select onchange="updateEducationDate(${index}, 'endDate', 'month', this.value)" ${edu.isCurrentlyEnrolled ? "disabled" : ""}>
-                            <option value="">Month</option>
+                            <option value="">Mes</option>
                             ${months.map((month) => `<option value="${month}" ${edu.endDate.month === month ? "selected" : ""}>${month}</option>`).join("")}
                         </select>
                         <select onchange="updateEducationDate(${index}, 'endDate', 'year', this.value)" ${edu.isCurrentlyEnrolled ? "disabled" : ""}>
-                            <option value="">Year</option>
+                            <option value="">Año</option>
                             ${years.map((year) => `<option value="${year}" ${edu.endDate.year === year ? "selected" : ""}>${year}</option>`).join("")}
                         </select>
                     </div>
                     <div class="checkbox-group">
                         <input type="checkbox" id="enrolled-${index}" ${edu.isCurrentlyEnrolled ? "checked" : ""} onchange="updateEducation(${index}, 'isCurrentlyEnrolled', this.checked)">
-                        <label for="enrolled-${index}">Currently enrolled</label>
+                        <label for="enrolled-${index}">Actualmente trabajo aquí</label>
                     </div>
                 </div>
             </div>
@@ -600,13 +600,13 @@ function renderAchievements() {
     const div = document.createElement("div")
     div.className = "dynamic-item"
     div.innerHTML = `
-            <h4>Achievement ${index + 1} <button type="button" class="remove-btn" onclick="removeAchievement(${index})">Remove</button></h4>
+            <h4>Logro ${index + 1} <button type="button" class="remove-btn" onclick="removeAchievement(${index})">Remover</button></h4>
             <div class="form-group">
-                <label>Title</label>
+                <label>Titulo</label>
                 <input type="text" value="${ach.title}" maxlength="60" onchange="updateAchievement(${index}, 'title', this.value)">
             </div>
             <div class="form-group">
-                <label>Description</label>
+                <label>Descripción</label>
                 <div id="achievement-desc-editor-${index}" class="wysiwyg-editor"></div>
                 <textarea id="achievement-desc-${index}" style="display: none;">${ach.description}</textarea>
             </div>
@@ -654,16 +654,16 @@ function renderLanguages() {
     const div = document.createElement("div")
     div.className = "dynamic-item"
     div.innerHTML = `
-            <h4>Language ${index + 1} <button type="button" class="remove-btn" onclick="removeLanguage(${index})">Remove</button></h4>
+            <h4>Idioma ${index + 1} <button type="button" class="remove-btn" onclick="removeLanguage(${index})">Remover</button></h4>
             <div class="form-row">
                 <div class="form-group">
-                    <label>Language</label>
+                    <label>Idioma</label>
                     <input type="text" value="${lang.language}" maxlength="15" onchange="updateLanguage(${index}, 'language', this.value)">
                 </div>
                 <div class="form-group">
                     <label>Level</label>
                     <select onchange="updateLanguage(${index}, 'level', this.value)">
-                        <option value="">Select level</option>
+                        <option value="">Seleccionar Nivel</option>
                         ${languageLevels.map((level) => `<option value="${level}" ${lang.level === level ? "selected" : ""}>${level}</option>`).join("")}
                     </select>
                 </div>
@@ -709,28 +709,28 @@ function renderReferences() {
     const div = document.createElement("div")
     div.className = "dynamic-item"
     div.innerHTML = `
-            <h4>Reference ${index + 1} <button type="button" class="remove-btn" onclick="removeReference(${index})">Remove</button></h4>
+            <h4>Referencia ${index + 1} <button type="button" class="remove-btn" onclick="removeReference(${index})">Remover</button></h4>
             <div class="form-row">
                 <div class="form-group">
-                    <label>Contact Name</label>
+                    <label>Nombre de contacto</label>
                     <input type="text" value="${ref.contactName}" maxlength="20" onchange="updateReference(${index}, 'contactName', this.value)">
                 </div>
                 <div class="form-group">
-                    <label>Company Name</label>
+                    <label>Nombre de la compañía</label>
                     <input type="text" value="${ref.companyName}" maxlength="30" onchange="updateReference(${index}, 'companyName', this.value)">
                 </div>
             </div>
             <div class="form-group">
-                <label>Job Title</label>
+                <label>Título del trabajo</label>
                 <input type="text" value="${ref.jobTitle}" maxlength="30" onchange="updateReference(${index}, 'jobTitle', this.value)">
             </div>
             <div class="form-row">
                 <div class="form-group">
-                    <label>Phone Number</label>
+                    <label>Número de teléfono</label>
                     <input type="text" value="${ref.phoneNumber}" maxlength="20" onchange="updateReference(${index}, 'phoneNumber', this.value)">
                 </div>
                 <div class="form-group">
-                    <label>Email</label>
+                    <label>Correo Electrónico</label>
                     <input type="email" value="${ref.email}" maxlength="40" onchange="updateReference(${index}, 'email', this.value)">
                 </div>
             </div>
@@ -772,40 +772,40 @@ function renderCertifications() {
     const div = document.createElement("div")
     div.className = "dynamic-item"
     div.innerHTML = `
-            <h4>Certification ${index + 1} <button type="button" class="remove-btn" onclick="removeCertification(${index})">Remove</button></h4>
+            <h4>Certificación ${index + 1} <button type="button" class="remove-btn" onclick="removeCertification(${index})">Remover</button></h4>
             <div class="form-row">
                 <div class="form-group">
-                    <label>Title</label>
+                    <label>Titulo</label>
                     <input type="text" value="${cert.title}" maxlength="100" onchange="updateCertification(${index}, 'title', this.value)">
                 </div>
                 <div class="form-group">
-                    <label>Institution Name</label>
+                    <label>Nombre de Institución</label>
                     <input type="text" value="${cert.institutionName}" maxlength="100" onchange="updateCertification(${index}, 'institutionName', this.value)">
                 </div>
             </div>
             <div class="date-row">
                 <div class="form-group">
-                    <label>Start Date</label>
+                    <label>Fecha de incio</label>
                     <div class="date-inputs">
                         <select onchange="updateCertificationDate(${index}, 'startDate', 'month', this.value)">
-                            <option value="">Month</option>
+                            <option value="">Mes</option>
                             ${months.map((month) => `<option value="${month}" ${cert.startDate.month === month ? "selected" : ""}>${month}</option>`).join("")}
                         </select>
                         <select onchange="updateCertificationDate(${index}, 'startDate', 'year', this.value)">
-                            <option value="">Year</option>
+                            <option value="">Año</option>
                             ${years.map((year) => `<option value="${year}" ${cert.startDate.year === year ? "selected" : ""}>${year}</option>`).join("")}
                         </select>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label>End Date</label>
+                    <label>Fecha de finalización</label>
                     <div class="date-inputs">
                         <select onchange="updateCertificationDate(${index}, 'endDate', 'month', this.value)">
-                            <option value="">Month</option>
+                            <option value="">Mes</option>
                             ${months.map((month) => `<option value="${month}" ${cert.endDate.month === month ? "selected" : ""}>${month}</option>`).join("")}
                         </select>
                         <select onchange="updateCertificationDate(${index}, 'endDate', 'year', this.value)">
-                            <option value="">Year</option>
+                            <option value="">Año</option>
                             ${years.map((year) => `<option value="${year}" ${cert.endDate.year === year ? "selected" : ""}>${year}</option>`).join("")}
                         </select>
                     </div>
@@ -852,16 +852,16 @@ function renderSkills() {
     const div = document.createElement("div")
     div.className = "dynamic-item"
     div.innerHTML = `
-            <h4>Skill ${index + 1} <button type="button" class="remove-btn" onclick="removeSkill(${index})">Remove</button></h4>
+            <h4>Habilidades ${index + 1} <button type="button" class="remove-btn" onclick="removeSkill(${index})">Remover</button></h4>
             <div class="form-row">
                 <div class="form-group">
-                    <label>Skill Name</label>
+                    <label>Nombre de Habilidad</label>
                     <input type="text" value="${skill.skillName}" maxlength="30" onchange="updateSkill(${index}, 'skillName', this.value)">
                 </div>
                 <div class="form-group">
-                    <label>Level</label>
+                    <label>Nivel</label>
                     <select onchange="updateSkill(${index}, 'level', this.value)">
-                        <option value="">Select level</option>
+                        <option value="">Seleccionar nivel</option>
                         ${skillLevels.map((level) => `<option value="${level}" ${skill.level === level ? "selected" : ""}>${level}</option>`).join("")}
                     </select>
                 </div>
@@ -904,8 +904,8 @@ function renderCoreStrengths() {
     div.className = "dynamic-item"
     div.innerHTML = `
             <div style="display: flex; align-items: center; gap: 8px;">
-                <input type="text" value="${strength.coreName}" maxlength="50" onchange="updateCoreStrength(${index}, this.value)" placeholder="Core strength ${index + 1}" style="flex: 1;">
-                <button type="button" class="remove-btn" onclick="removeCoreStrength(${index})">Remove</button>
+                <input type="text" value="${strength.coreName}" maxlength="50" onchange="updateCoreStrength(${index}, this.value)" placeholder="Fortaleza ${index + 1}" style="flex: 1;">
+                <button type="button" class="remove-btn" onclick="removeCoreStrength(${index})">Remover</button>
             </div>
         `
     container.appendChild(div)
@@ -968,7 +968,7 @@ function updatePreview() {
   cvData.personalInfo.websites[1] = document.getElementById("website2").value
 
   // Update preview elements
-  document.getElementById("preview-name").textContent = cvData.personalInfo.name || "Your Name"
+  document.getElementById("preview-name").textContent = cvData.personalInfo.name || "Tu Nombre"
   document.getElementById("preview-phone").textContent = cvData.personalInfo.phone
   document.getElementById("preview-email").textContent = cvData.personalInfo.email
   document.getElementById("preview-location").textContent = cvData.personalInfo.location
@@ -1169,7 +1169,35 @@ function hideSection(elementId) {
 
 // PDF Download function
 function downloadPDF() {
-  window.print()
+  const element = document.getElementById("cv-preview");
+  document.body.classList.add("pdf-generating");
+
+  const opt = {
+    margin: 0,
+    filename: "cv.pdf",
+    image: { type: "jpeg", quality: 0.98 },
+    html2canvas: {
+      scale: 2,
+      logging: true,
+      useCORS: true,
+    },
+    jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+  };
+
+  // Use a small timeout to allow the DOM to update with the new CSS classes
+  setTimeout(() => {
+    html2pdf()
+      .from(element)
+      .set(opt)
+      .save()
+      .then(() => {
+        document.body.classList.remove("pdf-generating");
+      })
+      .catch((error) => {
+        console.error("Error generating PDF:", error);
+        document.body.classList.remove("pdf-generating");
+      });
+  }, 150);
 }
 
 // Export CV data as JSON for AI processing
