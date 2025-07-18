@@ -59,12 +59,12 @@ async function checkUserProfile(user) {
         if (profile.success && profile.data.profileComplete) {
             window.location.href = '/';
         } else {
-            window.location.href = '/profileForm';
+            window.location.href = '/';
         }
     } catch (error) {
         console.error('Error checking user profile:', error);
         // Redirect to profile form by default if there's an error
-        window.location.href = '/profileForm';
+        window.location.href = '/';
     }
 }
 

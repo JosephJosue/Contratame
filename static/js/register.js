@@ -181,7 +181,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     }).then(() => {
                         alert("Cuenta creada exitosamente");
                         console.log("Usuario creado:", user);
-                        window.location.href = '/profile-form';
+                        window.location.href = '/';
                     });
                 })
                 .catch((error) => {

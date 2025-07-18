@@ -230,10 +230,7 @@ async function optimizeCV() {
 
   try {
     // Get current CV data as JSON
-    const currentCVData = JSON.stringify(cvData, null, 2)
-
-    // Here you would typically send this to your backend AI service
-    // For now, we'll simulate the process
+    const currentCVData = JSON.stringify(cvData)
     const response = await fetch("/api/optimize-cv", {
       method: "POST",
       headers: {
@@ -251,11 +248,12 @@ async function optimizeCV() {
       updateCVWithOptimizedData(optimizedData)
       alert("CV optimized successfully!")
     } else {
-      throw new Error("Failed to optimize CV")
+      const errorData = await response.json();
+      throw new Error(errorData.error || "Failed to optimize CV from server");
     }
   } catch (error) {
-    console.error("Error optimizing CV:", error)
-    alert("Failed to optimize CV. Please try again.")
+    console.error("Error optimizando CV:", error)
+    alert(`Failed to optimize CV. Please try again. Error: ${error.message}`)
   } finally {
     optimizeBtn.disabled = false
     optimizeBtn.textContent = "🚀 Optimize CV"
@@ -327,22 +325,22 @@ function formatDate(startDate, endDate, isCurrent = false, isEnrolled = false) {
 
 function getLanguageLevel(level) {
   const levels = {
-    "Native or Proficient (C2)": 100,
-    "Advanced (C1)": 85,
-    "Upper Intermediate (B2)": 70,
-    "Intermediate (B1)": 55,
-    "Elementary (A2)": 40,
-    "Beginner (A1)": 25,
+    "Nativo (C2)": 100,
+    "Advanzado (C1)": 85,
+    "Intermedia superior (B2)": 70,
+    "Intermedio (B1)": 55,
+    "Elemental (A2)": 40,
+    "Principiante (A1)": 25,
   }
   return levels[level] || 0
 }
 
 function getSkillLevel(level) {
   const levels = {
-    Expert: 100,
-    Advanced: 75,
-    Intermediate: 50,
-    Beginner: 25,
+    Experto: 100,
+    Advanzado: 75,
+    Intermedio: 50,
+    Principiante: 25,
   }
   return levels[level] || 0
 }
@@ -549,7 +547,7 @@ function renderEducation() {
                     </div>
                     <div class="checkbox-group">
                         <input type="checkbox" id="enrolled-${index}" ${edu.isCurrentlyEnrolled ? "checked" : ""} onchange="updateEducation(${index}, 'isCurrentlyEnrolled', this.checked)">
-                        <label for="enrolled-${index}">Actualmente trabajo aquí</label>
+                        <label for="enrolled-${index}">Actualmente estudio aquí</label>
                     </div>
                 </div>
             </div>
@@ -661,7 +659,7 @@ function renderLanguages() {
                     <input type="text" value="${lang.language}" maxlength="15" onchange="updateLanguage(${index}, 'language', this.value)">
                 </div>
                 <div class="form-group">
-                    <label>Level</label>
+                    <label>Nivel</label>
                     <select onchange="updateLanguage(${index}, 'level', this.value)">
                         <option value="">Seleccionar Nivel</option>
                         ${languageLevels.map((level) => `<option value="${level}" ${lang.level === level ? "selected" : ""}>${level}</option>`).join("")}
@@ -974,7 +972,7 @@ function updatePreview() {
   document.getElementById("preview-location").textContent = cvData.personalInfo.location
 
   // Update professional profile
-  updateSection("preview-professional-profile", "Professional Profile", cvData.professionalProfile)
+  updateSection("preview-professional-profile", "Perfil Profesional", cvData.professionalProfile)
 
   // Update websites
   const websites = cvData.personalInfo.websites.filter((w) => w.trim())
@@ -993,7 +991,7 @@ function updatePreview() {
       .filter((s) => s.coreName.trim())
       .map((strength) => `<span class="tag">${strength.coreName}</span>`)
       .join("")
-    updateSection("preview-core-strengths", "Core Strengths", `<div class="tags">${tagsHtml}</div>`)
+    updateSection("preview-core-strengths", "Fortalezas", `<div class="tags">${tagsHtml}</div>`)
   } else {
     hideSection("preview-core-strengths")
   }
@@ -1016,7 +1014,7 @@ function updatePreview() {
                 `,
       )
       .join("")
-    updateSection("preview-skills", "Skills", skillsHtml)
+    updateSection("preview-skills", "Habilidades", skillsHtml)
   } else {
     hideSection("preview-skills")
   }
@@ -1039,7 +1037,7 @@ function updatePreview() {
                 `,
       )
       .join("")
-    updateSection("preview-languages", "Languages", languagesHtml)
+    updateSection("preview-languages", "Idiomas", languagesHtml)
   } else {
     hideSection("preview-languages")
   }
@@ -1062,7 +1060,7 @@ function updatePreview() {
                 `,
       )
       .join("")
-    updateSection("preview-references", "References", referencesHtml)
+    updateSection("preview-references", "Referencias", referencesHtml)
   } else {
     hideSection("preview-references")
   }
@@ -1084,7 +1082,7 @@ function updatePreview() {
                 `,
       )
       .join("")
-    updateSection("preview-experience", "Experience", experienceHtml)
+    updateSection("preview-experience", "Experiencia", experienceHtml)
   } else {
     hideSection("preview-experience")
   }
@@ -1105,7 +1103,7 @@ function updatePreview() {
                 `,
       )
       .join("")
-    updateSection("preview-education", "Education", educationHtml)
+    updateSection("preview-education", "Educación", educationHtml)
   } else {
     hideSection("preview-education")
   }
@@ -1126,7 +1124,7 @@ function updatePreview() {
                 `,
       )
       .join("")
-    updateSection("preview-certifications", "Courses & Certifications", certificationsHtml)
+    updateSection("preview-certifications", "Cursos & Certificaciones", certificationsHtml)
   } else {
     hideSection("preview-certifications")
   }
@@ -1144,7 +1142,7 @@ function updatePreview() {
                 `,
       )
       .join("")
-    updateSection("preview-achievements", "Achievements", achievementsHtml)
+    updateSection("preview-achievements", "Logros", achievementsHtml)
   } else {
     hideSection("preview-achievements")
   }
@@ -1229,3 +1227,132 @@ function initializeSections() {
   renderSkills()
   renderCoreStrengths()
 }
+
+// --- FUNCIÓN DE AUTOCOMPLETADO PARA PRUEBAS ---
+
+function autofillMyCV() {
+  const myCVData = {
+    "personalInfo": {
+    "name": "ALEJANDRO AUGUSTO PINZÓN",
+    "phone": "+507 6548-0466",
+    "email": "alejandro.pinzon19@gmail.com",
+    "location": "Panamá",
+    "websites": [
+      "LinkedIn/Portafolio",
+      ""
+    ]
+  },
+  "professionalProfile": "<p>Poseo habilidades para el aprendizaje profundo y aplicado en áreas tanto técnicas como de gestión[cite: 4]. [cite_start]Cuento con experiencia en la comunicación efectiva de ideas, así como en la interacción con diversas personas y equipos[cite: 5]. [cite_start]Me adapto con facilidad a distintos entornos de trabajo y desafío[cite: 6]. [cite_start]He participado en la conceptualización y desarrollo de proyectos, abarcando desde la toma de decisiones estratégicas hasta la ejecución técnica directa[cite: 7].</p>",
+  "experience": [
+    {
+      "jobTitle": "Asistente estudiantil",
+      "companyName": "Odyssey Labs - Universidad Interamericana de Panamá",
+      "jobDescription": "<ul><li>Mentor y facilitador para más de 10 estudiantes del programa PISTA del SENACYT, apoyando su desarrollo académico y profesional [cite: 19][cite_start].</li><li>Asistente técnico en la instalación de 24 puntos de acceso con códigos QR y electromagnetos en puertas del campus, facilitando el control de asistencia de profesores y mejorando la seguridad en la Universidad Interamericana de Panamá [cite: 20][cite_start].</li><li>Brindé soporte técnico en la cobertura de más de 7 eventos universitarios, asegurando el correcto funcionamiento de los sistemas tecnológicos y la generación de contenido para redes[cite: 21].</li></ul>",
+      "country": "Panamá",
+      "startDate": { "month": "August", "year": "2023" },
+      "endDate": { "month": "April", "year": "2025" },
+      "isCurrent": false
+    },
+    {
+      "jobTitle": "Encargado de Tecnología",
+      "companyName": "CODEM - Centro Educativo Stella Sierra",
+      "jobDescription": "<ul><li>Diseño, implementación y lanzamiento de un sitio web funcional para apoyar la difusión y operación del proyecto [cite: 27][cite_start].</li><li>Contribución al desarrollo del interés y participación en los objetivos del proyecto en más de 23 estudiantes jóvenes[cite: 28].</li></ul>",
+      "country": "Panamá",
+      "startDate": { "month": "January", "year": "2025" },
+      "endDate": { "month": "June", "year": "2025" },
+      "isCurrent": false
+    }
+  ],
+  "education": [
+    {
+      "title": "Licenciatura en Sistemas Computacionales con énfasis en Desarrollo de Sistemas Avanzados en Redes y Software",
+      "institutionName": "Universidad Interamericana de Panamá",
+      "country": "Panamá",
+      "startDate": { "month": "May", "year": "2022" },
+      "endDate": { "month": "January", "year": "2026" },
+      "isCurrentlyEnrolled": true
+    },
+    {
+      "title": "Bachillerato en Ciencias",
+      "institutionName": "Colegio Bilingüe de Panamá",
+      "country": "Panamá",
+      "startDate": { "month": "March", "year": "2016" },
+      "endDate": { "month": "December", "year": "2021" },
+      "isCurrentlyEnrolled": false
+    }
+  ],
+  "achievements": [
+    {
+      "title": "Semifinalista - Huawei Seeds for the Future 2024",
+      "description": "Destacado por habilidades en trabajo colaborativo, liderazgo de proyectos y comunicación efectiva de ideas en un entorno multicultural y tecnológico de alto nivel[cite: 10]."
+    },
+    {
+      "title": "Egresado - Laboratorio Latinoamericano de Acción Ciudadana (LLAC) 2025",
+      "description": "Formación en planificación estratégica para proyectos de impacto ciudadano[cite: 12]. [cite_start]Participación activa en la evaluación de ideas, coordinación de equipos, y fortalecimiento de habilidades de resiliencia y trabajo colaborativo[cite: 12]."
+    }
+  ],
+  "languages": [
+    {
+      "language": "Español",
+      "level": "Native or Proficient (C2)"
+    },
+    {
+      "language": "Inglés",
+      "level": "Advanced (C1)"
+    }
+  ],
+  "references": [],
+  "certifications": [
+    {
+      "title": "Cisco Certified Support Technician (CCST): Networking Essentials",
+      "institutionName": "Cisco Networking Academy",
+      "startDate": { "month": "", "year": "" },
+      "endDate": { "month": "", "year": "" }
+    }
+  ],
+  "skills": [
+    { "skillName": "Redes", "level": "Advanced" },
+    { "skillName": "Software", "level": "Advanced" },
+    { "skillName": "Gestión de equipos", "level": "Advanced" }
+  ],
+  "coreStrengths": [
+    { "coreName": "Pensamiento Crítico" },
+    { "coreName": "Resolución de Problemas" },
+    { "coreName": "Proactividad" },
+    { "coreName": "Capacidad de Adaptación" },
+    { "coreName": "Liderazgo" }
+  ]
+};
+
+  // Sobrescribe el objeto global cvData con tus datos
+  Object.assign(cvData, myCVData);
+
+  // Actualiza los campos del formulario con los nuevos datos
+  document.getElementById("name").value = cvData.personalInfo.name;
+  document.getElementById("phone").value = cvData.personalInfo.phone;
+  document.getElementById("email").value = cvData.personalInfo.email;
+  document.getElementById("location").value = cvData.personalInfo.location;
+  document.getElementById("website1").value = cvData.personalInfo.websites[0] || "";
+  document.getElementById("website2").value = cvData.personalInfo.websites[1] || "";
+
+  // Actualiza el editor WYSIWYG de perfil profesional
+  editors.professionalProfile.root.innerHTML = cvData.professionalProfile;
+
+  // Vuelve a renderizar todas las secciones dinámicas del formulario
+  renderExperience();
+  renderEducation();
+  renderAchievements();
+  renderLanguages();
+  renderReferences();
+  renderCertifications();
+  renderSkills();
+  renderCoreStrengths();
+
+  // Finalmente, actualiza la vista previa del CV
+  updatePreview();
+
+  console.log("¡Formulario autocompletado con los datos de Joseph Loo!");
+}
+
+// Para que el botón de prueba sea globalmente accesible desde el HTML
+window.autofillMyCV = autofillMyCV;
