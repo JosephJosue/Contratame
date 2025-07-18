@@ -51,13 +51,29 @@ function handleFirebaseError(error) {
     return message;
 }
 
+import { firestoreService } from './firestore-service.js';
+
+async function checkUserProfile(user) {
+    try {
+        const profile = await firestoreService.getUserProfile(user.uid);
+        if (profile.success && profile.data.profileComplete) {
+            window.location.href = '/';
+        } else {
+            window.location.href = '/profileForm';
+        }
+    } catch (error) {
+        console.error('Error checking user profile:', error);
+        // Redirect to profile form by default if there's an error
+        window.location.href = '/profileForm';
+    }
+}
+
 function signInWithGoogle() {
     signInWithPopup(auth, googleProvider)
         .then((result) => {
             const user = result.user;
             console.log("Usuario autenticado con Google:", user);
-            alert(`¡Bienvenido, ${user.displayName}!`);
-            window.location.href = '/';
+            checkUserProfile(user);
         })
         .catch((error) => {
             const errorMessage = handleFirebaseError(error);
@@ -106,9 +122,8 @@ document.addEventListener('DOMContentLoaded', function () {
             signInWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
                     const user = userCredential.user;
-                    alert('Inicio de sesión exitoso');
                     console.log('Usuario autenticado:', user);
-                    window.location.href = '/';
+                    checkUserProfile(user);
                 })
                 .catch((error) => {
                     const errorMessage = handleFirebaseError(error);

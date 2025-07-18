@@ -750,6 +750,44 @@ body {
   }
 }
 
+/* PDF Generation Styles */
+.pdf-generating .content-wrapper,
+.pdf-generating .preview-section {
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: visible !important;
+}
+
+.pdf-generating .cv-container {
+  align-items: center !important;
+  justify-content: flex-start !important;
+}
+
+.pdf-generating .form-section,
+.pdf-generating .resize-handle,
+.pdf-generating .preview-header,
+.pdf-generating .download-container,
+.pdf-generating .ai-assistant,
+.pdf-generating .mobile-toggle {
+  display: none !important;
+}
+
+.pdf-generating .cv-preview {
+  box-shadow: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  gap: 0 !important;
+}
+
+.pdf-generating .cv-page {
+  border: none !important;
+  box-shadow: none !important;
+  transform: scale(1) !important; /* Reset any scaling */
+  width: 210mm !important;
+  margin: 0 !important;
+  page-break-after: auto !important;
+}
+
 /* Responsive Design */
 @media (max-width: 1024px) {
   .cv-page {

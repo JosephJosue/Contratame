@@ -575,3 +575,49 @@ textarea.form-control {
         min-height: 600px;
     }
 }
+
+/* Custom Date Picker Styles */
+.date-picker-container {
+    position: relative;
+}
+
+.date-picker-popup {
+    display: none;
+    position: absolute;
+    top: calc(100% + 5px);
+    left: 0;
+    background-color: white;
+    border: 1px solid #e1e5e9;
+    border-radius: 12px;
+    padding: 15px;
+    z-index: 100;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+    width: 250px; /* Ancho fijo para el popup */
+}
+
+.date-picker-popup select {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #e1e5e9;
+    border-radius: 8px;
+    font-size: 14px;
+    background: #f8f9fa;
+}
+
+.date-picker-popup button {
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.date-picker-popup button:hover {
+    background: #5a6fd8;
+}

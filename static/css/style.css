@@ -22,10 +22,11 @@ body {
     line-height: 1.6;
     color: #333;
     overflow-x: hidden;
+    background: var(--dark-bg);
 }
 
 .content-wrapper {
-    padding-top: 70px; /* Adjust this value based on your navbar's height */
+    padding-top: 110px; /* Adjust this value based on your navbar's height */
 }
 
 /* Navbar Styles */
@@ -64,6 +65,10 @@ body {
 
 .navbar-nav .nav-link:hover {
     color: white !important;
+}
+
+#logout-link {
+    color: orangered;
 }
 
 .dropdown-menu {
@@ -142,6 +147,16 @@ body {
 @keyframes float {
     0%, 100% { transform: translate(-50%, -50%) translateY(0px); }
     50% { transform: translate(-50%, -50%) translateY(-20px); }
+}
+
+@media (max-width: 991.98px) {
+    navbar.fixed-top {
+    position: static;
+}
+
+.content-wrapper {
+    padding-top: 0;
+    }
 }
 
 /* Features Section */
@@ -389,6 +404,10 @@ body {
         width: 100%;
         margin-bottom: 1rem;
     }
+
+    .content-wrapper {
+        padding-top: 100px; /* Increased padding for mobile */
+    }
 }
 
 @media (max-width: 576px) {
@@ -406,6 +425,16 @@ body {
     
     .step-card {
         padding: 1.5rem 0.5rem;
+    }
+}
+
+@media (max-width: 991.98px) {
+    .navbar.fixed-top {
+        position: static;
+    }
+
+    .content-wrapper {
+        padding-top: 0;
     }
 }
 

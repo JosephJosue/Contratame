@@ -1,4 +1,5 @@
-import { firestoreService } from './firestore-service.js'; // se agrega la importación del servicio Firestore porque daba un error al guardar el CV.
+import { firestoreService } from './firestore-service.js';
+import { auth } from './firebase-config.js'; // Importar auth
 
 class MultiStepForm {
     constructor() {
@@ -36,6 +37,45 @@ class MultiStepForm {
         this.loadFormData();
         this.addInitialSections();
         this.updateStepVisibility(); //agregado para mostrar la sección correcta al cargar el formulario
+        this.initDatePickers();
+    }
+
+    initDatePickers(container = document) {
+        const datePickerInputs = container.querySelectorAll('.date-picker-input');
+        datePickerInputs.forEach(input => {
+            const container = input.closest('.date-picker-container');
+            const popup = container.querySelector('.date-picker-popup');
+            const monthSelect = popup.querySelector('.month-select');
+            const yearSelect = popup.querySelector('.year-select');
+
+            const meses = [
+                { nombre: "Enero", numero: "01" }, { nombre: "Febrero", numero: "02" },
+                { nombre: "Marzo", numero: "03" }, { nombre: "Abril", numero: "04" },
+                { nombre: "Mayo", numero: "05" }, { nombre: "Junio", numero: "06" },
+                { nombre: "Julio", numero: "07" }, { nombre: "Agosto", numero: "08" },
+                { nombre: "Septiembre", numero: "09" }, { nombre: "Octubre", numero: "10" },
+                { nombre: "Noviembre", numero: "11" }, { nombre: "Diciembre", numero: "12" }
+            ];
+
+            if (monthSelect.options.length === 0) {
+                meses.forEach(mes => {
+                    const option = document.createElement("option");
+                    option.value = mes.numero;
+                    option.text = mes.nombre;
+                    monthSelect.appendChild(option);
+                });
+            }
+
+            if (yearSelect.options.length === 0) {
+                const currentYear = new Date().getFullYear();
+                for (let y = currentYear; y >= currentYear - 60; y--) {
+                    const option = document.createElement("option");
+                    option.value = y;
+                    option.text = y;
+                    yearSelect.appendChild(option);
+                }
+            }
+        });
     }
 
     addInitialSections() {
@@ -52,6 +92,41 @@ class MultiStepForm {
         document.getElementById('prevBtn').addEventListener('click', () => this.prevStep());
 
         document.addEventListener('click', (e) => {
+            // Delegated event for date picker input
+            if (e.target.matches('.date-picker-input')) {
+                const popup = e.target.nextElementSibling;
+                const allPopups = document.querySelectorAll('.date-picker-popup');
+                allPopups.forEach(p => {
+                    if (p !== popup) {
+                        p.style.display = 'none';
+                    }
+                });
+                popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
+                return;
+            }
+
+            // Delegated event for set date button
+            if (e.target.matches('.set-date-btn')) {
+                const popup = e.target.closest('.date-picker-popup');
+                const container = popup.closest('.date-picker-container');
+                const input = container.querySelector('.date-picker-input');
+                const monthSelect = popup.querySelector('.month-select');
+                const yearSelect = popup.querySelector('.year-select');
+                
+                input.value = `${monthSelect.value}/${yearSelect.value}`;
+                this.formData[input.name] = `${yearSelect.value}-${monthSelect.value}`;
+                this.saveFormData();
+                this.validateField(input);
+                popup.style.display = 'none';
+                return;
+            }
+
+            // Close popups when clicking outside
+            if (!e.target.closest('.date-picker-container')) {
+                const allPopups = document.querySelectorAll('.date-picker-popup');
+                allPopups.forEach(p => p.style.display = 'none');
+            }
+
             const addBtn = e.target.closest('.add-section-btn');
             if (addBtn) {
                 const action = addBtn.dataset.action;
@@ -101,6 +176,10 @@ class MultiStepForm {
         }, true);
 
         document.addEventListener('change', (e) => {
+            if (e.target.matches('input[type="month"]')) {
+                this.saveFormData();
+            }
+
             if (e.target.matches('.form-control, .form-select, .form-check-input')) {
                 this.saveFormData();
             }
@@ -457,10 +536,13 @@ loadFormData() {
             let sectionContent = `<h5>${title.slice(0, -1)} #${index + 1}</h5>`;
             fields.forEach(field => {
                 const key = `${type}_${field}_${index}`;
-                const value = this.formData[key];
+                let value = this.formData[key];
                 if (field === 'actual' && value) {
                     sectionContent += `<div class="preview-item"><div class="preview-value"><strong>Actualmente aquí</strong></div></div>`;
                 } else if (field !== 'actual' && value) {
+                    if (field === 'inicio' || field === 'fin') {
+                        value = this.formatMonthYear(value);
+                    }
                     sectionContent += `<div class="preview-item"><div class="preview-label">${this.getFieldLabel(field)}:</div><div class="preview-value">${value}</div></div>`;
                 }
             });
@@ -491,6 +573,16 @@ loadFormData() {
             nivel: 'Nivel', descripcion: 'Descripción'
         };
         return labels[field] || field;
+    }
+
+    formatMonthYear(dateString) {
+        if (!dateString || !/^\d{4}-\d{2}$/.test(dateString)) {
+            return dateString;
+        }
+        const [year, month] = dateString.split('-');
+        const date = new Date(year, month - 1);
+        const monthName = date.toLocaleString('es-ES', { month: 'long' });
+        return `${monthName.charAt(0).toUpperCase() + monthName.slice(1)} de ${year}`;
     }
 
     showSection(sectionNumber, direction = 'next') {
@@ -675,11 +767,19 @@ loadFormData() {
         }
     }
 
-async submitForm() {
+    async submitForm() {
     if (this.isTransitioning) return;
     this.isTransitioning = true;
 
     this.saveFormData(this.currentStep);
+
+    const user = auth.currentUser;
+    if (!user) {
+        console.error('No user is signed in.');
+        alert('Error: Debes iniciar sesión para guardar tu CV.');
+        this.isTransitioning = false;
+        return;
+    }
 
     // Limpiar formData: eliminar campos con valores de cadena vacíos y CLAVES VACÍAS
     const dataToSave = {};
@@ -697,20 +797,13 @@ async submitForm() {
     }
 
     try {
-        // Asegúrate de tener un userId válido aquí (por ejemplo, del usuario autenticado)
-        const userId = "aBUQPP1SFha0RSl2ElwrYkcMJNn2"; // Reemplaza esto con el ID de usuario real de Firebase Auth
-        const result = await firestoreService.saveUserCV(userId, dataToSave);
+        const userId = user.uid;
+        await firestoreService.saveUserCV(userId, dataToSave);
+        await firestoreService.updateDocument('profiles', userId, { profileComplete: true });
 
-        if (result.success) {
-            console.log('CV guardado exitosamente:', result.id);
-            this.currentStep++;
-            this.updateProgress();
-            this.updateStepVisibility();
-            this.resetValidation();
-        } else {
-            console.error('Error al guardar el CV:', result.error);
-            alert(`Error al enviar el formulario: ${result.error}`);
-        }
+        console.log('CV guardado exitosamente');
+        // Redirect to index.html
+        window.location.href = '/';
     } catch (error) {
         console.error('Error en submitForm:', error);
         alert(`Ocurrió un error inesperado: ${error.message}`);
@@ -738,6 +831,7 @@ async submitForm() {
         newSection.setAttribute('data-index', index);
         newSection.innerHTML = content(index);
         container.appendChild(newSection);
+        this.initDatePickers(newSection);
     }
 
     addPortafolio() {
@@ -766,7 +860,31 @@ async submitForm() {
             </div>
             <div class="form-group"><label class="form-label">Título del Puesto *</label><div class="input-group"><i class="fas fa-id-badge input-icon"></i><input type="text" class="form-control" id="experiencia_titulo_${index}" name="experiencia_titulo_${index}" placeholder="Ej: Desarrollador Frontend" required></div><div class="validation-message" id="experiencia_titulo_${index}Error"></div></div>
             <div class="form-group"><label class="form-label">Nombre de la Compañía *</label><div class="input-group"><i class="fas fa-building input-icon"></i><input type="text" class="form-control" id="experiencia_compania_${index}" name="experiencia_compania_${index}" placeholder="Ej: Tech Solutions Inc." required></div><div class="validation-message" id="experiencia_compania_${index}Error"></div></div>
-            <div class="date-row"><div class="form-group"><label class="form-label">Fecha de Inicio *</label><input type="month" class="form-control" id="experiencia_inicio_${index}" name="experiencia_inicio_${index}" required></div><div class="form-group"><label class="form-label">Fecha de Finalización</label><input type="month" class="form-control" id="experiencia_fin_${index}" name="experiencia_fin_${index}"><div class="checkbox-group"><input type="checkbox" class="form-check-input" name="experiencia_actual_${index}"><label class="form-check-label">Actualmente trabajo aquí</label></div></div></div>
+            <div class="date-row">
+                <div class="form-group">
+                    <label for="experiencia_inicio_${index}">Fecha de Inicio *</label>
+                    <div class="date-picker-container">
+                        <input type="text" class="form-control date-picker-input" id="experiencia_inicio_${index}" name="experiencia_inicio_${index}" readonly placeholder="MM/YYYY" required>
+                        <div class="date-picker-popup">
+                            <select class="month-select"></select>
+                            <select class="year-select"></select>
+                            <button type="button" class="set-date-btn">Seleccionar</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="experiencia_fin_${index}">Fecha de Finalización</label>
+                    <div class="date-picker-container">
+                        <input type="text" class="form-control date-picker-input" id="experiencia_fin_${index}" name="experiencia_fin_${index}" readonly placeholder="MM/YYYY">
+                        <div class="date-picker-popup">
+                            <select class="month-select"></select>
+                            <select class="year-select"></select>
+                            <button type="button" class="set-date-btn">Seleccionar</button>
+                        </div>
+                    </div>
+                    <div class="checkbox-group"><input type="checkbox" class="form-check-input" name="experiencia_actual_${index}"><label class="form-check-label">Actualmente trabajo aquí</label></div>
+                </div>
+            </div>
             <div class="form-group"><label class="form-label">Ubicación *</label><div class="input-group"><i class="fas fa-map-marker-alt input-icon"></i><input type="text" class="form-control" id="experiencia_ubicacion_${index}" name="experiencia_ubicacion_${index}" placeholder="Ciudad, País" required></div><div class="validation-message" id="experiencia_ubicacion_${index}Error"></div></div>
             <div class="form-group"><label class="form-label">Logros *</label><textarea class="form-control" id="experiencia_logros_${index}" name="experiencia_logros_${index}" rows="4" placeholder="Describe tus logros..." required></textarea><div class="validation-message" id="experiencia_logros_${index}Error"></div></div>
         `);
@@ -777,7 +895,31 @@ async submitForm() {
             <div class="dynamic-section-header"><h4 class="dynamic-section-title">Educación #${index + 1}</h4><button type="button" class="remove-section"><i class="fas fa-times"></i></button></div>
             <div class="form-group"><label class="form-label">Título o Campo de Estudio *</label><div class="input-group"><i class="fas fa-certificate input-icon"></i><input type="text" class="form-control" id="educacion_titulo_${index}" name="educacion_titulo_${index}" placeholder="Ej: Ingeniería en Sistemas" required></div><div class="validation-message" id="educacion_titulo_${index}Error"></div></div>
             <div class="form-group"><label class="form-label">Escuela o Universidad *</label><div class="input-group"><i class="fas fa-university input-icon"></i><input type="text" class="form-control" id="educacion_institucion_${index}" name="educacion_institucion_${index}" placeholder="Ej: Universidad Nacional" required></div><div class="validation-message" id="educacion_institucion_${index}Error"></div></div>
-            <div class="date-row"><div class="form-group"><label class="form-label">Periodo de Inicio *</label><input type="month" class="form-control" id="educacion_inicio_${index}" name="educacion_inicio_${index}" required></div><div class="form-group"><label class="form-label">Periodo de Finalización</label><input type="month" class="form-control" id="educacion_fin_${index}" name="educacion_fin_${index}"><div class="checkbox-group"><input type="checkbox" class="form-check-input" name="educacion_actual_${index}"><label class="form-check-label">Actualmente estudio aquí</label></div></div></div>
+            <div class="date-row">
+                <div class="form-group">
+                    <label for="educacion_inicio_${index}">Fecha de Inicio *</label>
+                    <div class="date-picker-container">
+                        <input type="text" class="form-control date-picker-input" id="educacion_inicio_${index}" name="educacion_inicio_${index}" readonly placeholder="MM/YYYY" required>
+                        <div class="date-picker-popup">
+                            <select class="month-select"></select>
+                            <select class="year-select"></select>
+                            <button type="button" class="set-date-btn">Seleccionar</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="educacion_fin_${index}">Fecha de Finalización</label>
+                    <div class="date-picker-container">
+                        <input type="text" class="form-control date-picker-input" id="educacion_fin_${index}" name="educacion_fin_${index}" readonly placeholder="MM/YYYY">
+                        <div class="date-picker-popup">
+                            <select class="month-select"></select>
+                            <select class="year-select"></select>
+                            <button type="button" class="set-date-btn">Seleccionar</button>
+                        </div>
+                    </div>
+                    <div class="checkbox-group"><input type="checkbox" class="form-check-input" name="educacion_actual_${index}"><label class="form-check-label">Actualmente estudio aquí</label></div>
+                </div>
+            </div>
         `);
     }
 
@@ -801,7 +943,30 @@ async submitForm() {
         this.addDynamicSection('curso', 'cursosContainer', index => `
             <div class="dynamic-section-header"><h4 class="dynamic-section-title">Curso #${index + 1}</h4><button type="button" class="remove-section"><i class="fas fa-times"></i></button></div>
             <div class="form-group"><label class="form-label">Título del Curso *</label><div class="input-group"><i class="fas fa-certificate input-icon"></i><input type="text" class="form-control" id="curso_titulo_${index}" name="curso_titulo_${index}" placeholder="Ej: Curso de React Avanzado" required></div><div class="validation-message" id="curso_titulo_${index}Error"></div></div>
-            <div class="date-row"><div class="form-group"><label class="form-label">Fecha de Inicio *</label><input type="month" class="form-control" id="curso_inicio_${index}" name="curso_inicio_${index}" required></div><div class="form-group"><label class="form-label">Fecha de Finalización *</label><input type="month" class="form-control" id="curso_fin_${index}" name="curso_fin_${index}" required></div></div>
+            <div class="date-row">
+                <div class="form-group">
+                    <label for="curso_inicio_${index}">Fecha de Inicio *</label>
+                    <div class="date-picker-container">
+                        <input type="text" class="form-control date-picker-input" id="curso_inicio_${index}" name="curso_inicio_${index}" readonly placeholder="MM/YYYY" required>
+                        <div class="date-picker-popup">
+                            <select class="month-select"></select>
+                            <select class="year-select"></select>
+                            <button type="button" class="set-date-btn">Seleccionar</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="curso_fin_${index}">Fecha de Finalización *</label>
+                    <div class="date-picker-container">
+                        <input type="text" class="form-control date-picker-input" id="curso_fin_${index}" name="curso_fin_${index}" readonly placeholder="MM/YYYY" required>
+                        <div class="date-picker-popup">
+                            <select class="month-select"></select>
+                            <select class="year-select"></select>
+                            <button type="button" class="set-date-btn">Seleccionar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         `);
     }
 

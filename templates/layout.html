@@ -3,21 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}HireMe!{% endblock %}</title>
+    <title>Contratame</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     {% block css %}{% endblock %}
 </head>
+
+<!--Cambios:-->
+<!--Se ocultaron elementos dentro del contenido, navbar y footer-->
+<!--Se tradujeron los componentes y contenido principal-->
+
 <body>
 <!-- Navbar Component -->
     <div id="navbar-container">
         <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
             <div class="container">
                 <a class="navbar-brand" href="/">
-                    <i class="fas fa-briefcase me-2"></i>
-                    <span class="brand-text">JobAI</span>
+                    <img src="{{ url_for('static', filename='img/download.png') }}" alt="Contratame Logo" width="220px" height="55px" class="d-inline-block align-text-top">
                 </a>
 
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -28,13 +32,13 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item">
-                            <a class="nav-link {% if request.endpoint == 'index' %}active{% endif %}" href="#features">Features</a>
+                            <a class="nav-link {% if request.endpoint == 'index' %}active{% endif %}" href="#features">Características</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {% if request.endpoint == 'how_it_works' %}active{% endif %}" href="#">Find Job</a>
+                            <a class="nav-link {% if request.endpoint == 'how_it_works' %}active{% endif %}" href="#">Buscar Trabajo</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {% if request.endpoint == 'pricing' %}active{% endif %}" href="#">Power Skills</a>
+                            <a class="nav-link {% if request.endpoint == 'pricing' %}active{% endif %}" href="/profile-form">Power Skills</a>
                         </li>
     <!--Hided-->        <li style="display: none" class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
@@ -50,10 +54,7 @@
                             </ul>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {% if request.endpoint == 'jobs' %}active{% endif %}" href="/cv-generate">CV Generate</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {% if request.endpoint == 'contact' %}active{% endif %}" href="#">Contact</a>
+                            <a class="nav-link {% if request.endpoint == 'jobs' %}active{% endif %}" href="/cv-generate">Generador de CV</a>
                         </li>
 
                         <!-- Authentication buttons -->
@@ -61,10 +62,10 @@
                             <!-- Logged-out state -->
                             <div id="logged-out-links">
                                 <li class="nav-item ms-2">
-                                    <a class="btn btn-outline-light btn-sm" href="{{ url_for('login') }}">Login</a>
+                                    <a class="btn btn-outline-light btn-sm" href="{{ url_for('login') }}">Iniciar Sesión</a>
                                 </li>
                                 <li class="nav-item ms-2">
-                                    <a class="btn btn-primary btn-sm" href="{{ url_for('register') }}">Sign Up</a>
+                                    <a class="btn btn-primary btn-sm" href="{{ url_for('register') }}">Registrate</a>
                                 </li>
                             </div>
                             <!-- Logged-in state (hidden by default) -->
@@ -75,11 +76,11 @@
                                         <i class="fas fa-user me-1"></i><span id="user-name"></span>
                                     </a>
                                     <ul class="dropdown-menu" aria-labelledby="userDropdown">
-                                        <li><a class="dropdown-item" href="{{ url_for('profile') }}">My Profile</a></li>
-                                        <li><a class="dropdown-item" href="#">My Jobs</a></li>
-                                        <li><a class="dropdown-item" href="#">Settings</a></li>
+                                        <li><a class="dropdown-item" href="{{ url_for('profile') }}">Mi perfil</a></li>
+<!--                                    <li><a class="dropdown-item" href="#">My Jobs</a></li>-->   <!--Se ocultaron por el momento-->
+<!--                                    <li><a class="dropdown-item" href="#">Settings</a></li>-->
                                         <li><hr class="dropdown-divider"></li>
-                                        <li><a class="dropdown-item" id="logout-link" href="#">Logout</a></li>
+                                        <li><a class="dropdown-item" id="logout-link" href="#">Cerrar sesión</a></li>
                                     </ul>
                                 </li>
                             </div>
@@ -101,12 +102,11 @@
             <div class="row">
                 <div class="col-lg-4 col-md-6 mb-4">
                     <div class="footer-brand">
-                        <i class="fas fa-briefcase me-2"></i>
-                        <span>JobAI</span>
+                        <span>Contratame</span>
                     </div>
                     <p class="footer-description">
-                        Connecting talent with opportunity through artificial intelligence.
-                        Find your dream job or discover the perfect candidate.
+                        Conectamos talento con oportunidades mediante inteligencia artificial.
+                        Encuentra el trabajo de tus sueños o descubre al candidato perfecto.
                     </p>
                     <div class="social-links mt-3">
                         <a href="#" class="social-link me-3"><i class="fab fa-twitter"></i></a>
@@ -117,26 +117,25 @@
                 </div>
 
                 <div class="col-lg-2 col-md-6 mb-4">
-                    <h6 class="footer-title">For Job Seekers</h6>
+                    <h6 class="footer-title">Para solicitantes de empleo</h6>
                     <ul class="footer-links">
-                        <li><a href="#" class="footer-link">Browse Jobs</a></li>
-                        <li><a href="#" class="footer-link">Career Advice</a></li>
-                        <li><a href="#" class="footer-link">Resume Builder</a></li>
-                        <li><a href="#" class="footer-link">Salary Guide</a></li>
+                        <li><a href="#" class="footer-link">Buscar trabajo</a></li>
+                        <li><a href="#" class="footer-link">Power skills</a></li>
+                        <li><a href="#" class="footer-link">Generador de CV</a></li>
                     </ul>
                 </div>
 
                 <div class="col-lg-2 col-md-6 mb-4">
-                    <h6 class="footer-title">For Employers</h6>
+                    <h6 class="footer-title">Para empleadores</h6>
                     <ul class="footer-links">
-                        <li><a href="#" class="footer-link">Post Jobs</a></li>
-                        <li><a href="#" class="footer-link">Find Talent</a></li>
-                        <li><a href="#" class="footer-link">Enterprise</a></li>
-                        <li><a href="#}" class="footer-link">Pricing</a></li>
+                        <li><a href="#" class="footer-link">Publicar vacante</a></li>
+                        <li><a href="#" class="footer-link">Encontrar talento</a></li>
+                        <li><a href="#" class="footer-link">Empresa</a></li>
+                        <li><a href="#}" class="footer-link">Precios</a></li>
                     </ul>
                 </div>
 
-                <div class="col-lg-2 col-md-6 mb-4">
+                <div style="display: none" class="col-lg-2 col-md-6 mb-4">
                     <h6 class="footer-title">Company</h6>
                     <ul class="footer-links">
                         <li><a href="#" class="footer-link">About Us</a></li>
@@ -146,7 +145,7 @@
                     </ul>
                 </div>
 
-                <div class="col-lg-2 col-md-6 mb-4">
+                <div style="display: none" class="col-lg-2 col-md-6 mb-4">
                     <h6 class="footer-title">Support</h6>
                     <ul class="footer-links">
                         <li><a href="#" class="footer-link">Help Center</a></li>
@@ -162,13 +161,13 @@
             <div class="row align-items-center">
                 <div class="col-md-6">
                     <p class="footer-copyright mb-0">
-                        &copy; {{ current_year or 2024 }} JobAI. All rights reserved.
+                        &copy; {{ current_year or 2025 }} Contratame. Todos los derechos reservados.
                     </p>
                 </div>
                 <div class="col-md-6 text-md-end">
                     <p class="footer-info mb-0">
-                        <i class="fas fa-envelope me-2"></i>contact@jobai.com
-                        <i class="fas fa-phone ms-3 me-2"></i>+1 (555) 123-4567
+                        <i class="fas fa-envelope me-2"></i><a href="mailto:contact@contratame.com">contact@contratame.com</a>
+                        <i class="fas fa-phone ms-3 me-2"></i>+507 6548-0466
                     </p>
                 </div>
             </div>
