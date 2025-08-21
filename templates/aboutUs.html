@@ -1,0 +1,191 @@
+{% extends 'layout.html' %}
+
+<!--Page title-->
+{% block title %}About Us{% endblock %}
+
+<!--Specific CSS code-->
+{% block css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/aboutUs.css') }}">
+{% endblock %}
+
+<!--Main content block-->
+{% block content %}
+<!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-title fade-in">Sobre Nosotros</h1>
+            <p class="hero-subtitle fade-in">
+                Somos un equipo apasionado por la innovación y la resolución de problemas, dedicado a crear soluciones que transforman la vida de los jóvenes y personas de nuestro país.
+            </p>
+        </div>
+    </section>
+
+    <!-- Mission & Vision Section -->
+    <section class="section section-bg-gray">
+        <div class="container">
+            <div class="mission-vision">
+                <div class="fade-in">
+                    <img src="/placeholder.svg?height=400&width=600&text=Nuestro+Equipo+Trabajando"
+                         alt="Nuestro equipo trabajando"
+                         class="mission-vision-image">
+                </div>
+                <div class="mission-vision-content">
+                    <div class="mission-item fade-in">
+                        <h3>Nuestra Misión</h3>
+                        <p>
+                            Empoderar a las personas a través de soluciones que eleven su potencial y les conduzca a mejorar su camino profesional.
+                            Creemos en la tecnología como herramienta para un mejoramiento íntegro en las capacidades tanto sociales, cómo técnicas de cada persona.
+                        </p>
+                    </div>
+                    <div class="mission-item fade-in">
+                        <h3>Nuestra Visión</h3>
+                        <p>
+                            Ser reconocidos como líderes en innovación tecnológica dirigida a combatir la problematica del desempleo, creando una cultura de mejoramiento y aprendizaje donde la tecnología y la
+                            humanidad trabajen en perfecta armonía.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Values Section -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title fade-in">Nuestros Valores</h2>
+            <p class="section-subtitle fade-in">
+                Los principios que guían cada decisión y acción en nuestro día a día
+            </p>
+
+            <div class="values-grid">
+                <div class="value-card innovation fade-in">
+                    <div class="value-icon innovation">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3>Innovación</h3>
+                    <p>
+                        La innovación no es solo un objetivo, sino la base sobre la cual construimos cada funcionalidad. Usamos inteligencia artificial y algoritmos avanzados para transformar la forma en que las personas buscan empleo, diseñan su currículum y descubren sus verdaderas fortalezas.
+                    </p>
+                </div>
+
+                <div class="value-card collaboration fade-in">
+                    <div class="value-icon collaboration">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Colaboración</h3>
+                    <p>
+                        Creemos que el progreso surge de la colaboración entre personas y tecnología. Por eso, nuestra plataforma actúa como un aliado que potencia las capacidades del usuario, al tiempo que facilita la conexión con reclutadores y empleadores.
+                    </p>
+                </div>
+
+                <div class="value-card excellence fade-in">
+                    <div class="value-icon excellence">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <h3>Excelencia</h3>
+                    <p>
+                        Desde la precisión en la creación de currículums hasta la calidad de las entrevistas virtuales y las recomendaciones personalizadas. Nos esforzamos en entregar soluciones confiables, útiles y de alto nivel que preparan a cada persona para mostrar lo mejor de sí misma.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="section section-bg-gray">
+        <div class="container">
+            <h2 class="section-title fade-in">Conoce a Nuestro Equipo</h2>
+            <p class="section-subtitle fade-in">
+                Las mentes brillantes detrás de Contratame.
+            </p>
+
+            <div class="team-grid">
+                <div class="team-card fade-in" data-member="">
+                    <img src="{{ url_for('static', filename='img/alejandro.jpg') }}"
+                         alt=""
+                         class="team-image">
+                    <div class="team-info">
+                        <h3 class="team-name">Alejandro Pinzón</h3>
+                        <p class="team-position">Programador Frontend y Diseñador UI/UX</p>
+                    </div>
+                </div>
+
+                <div class="team-card fade-in" data-member="">
+                    <img src="{{ url_for('static', filename='img/alexis.jpg') }}"
+                         alt=""
+                         class="team-image">
+                    <div class="team-info">
+                        <h3 class="team-name">Alexis Martínez</h3>
+                        <p class="team-position">Documentador y captación de datos</p>
+                    </div>
+                </div>
+
+                <div class="team-card fade-in" data-member="">
+                    <img src="{{ url_for('static', filename='img/erick.jpg') }}"
+                         alt=""
+                         class="team-image">
+                    <div class="team-info">
+                        <h3 class="team-name">Erick Martinez</h3>
+                        <p class="team-position">Documentador y captación de datos</p>
+                    </div>
+                </div>
+
+                <div class="team-card fade-in" data-member="">
+                    <img src="{{ url_for('static', filename='img/jair.jpg') }}"
+                         alt=""
+                         class="team-image">
+                    <div class="team-info">
+                        <h3 class="team-name">Jair Vergara</h3>
+                        <p class="team-position">Documentador y captación de datos</p>
+                    </div>
+                </div>
+
+                <div class="team-card fade-in" data-member="">
+                    <img src="{{ url_for('static', filename='img/jose.jpg') }}"
+                         alt=""
+                         class="team-image">
+                    <div class="team-info">
+                        <h3 class="team-name">José Pineda</h3>
+                        <p class="team-position">Gerente de proyecto</p>
+                    </div>
+                </div>
+
+                <div class="team-card fade-in" data-member="">
+                    <img src="{{ url_for('static', filename='img/joseph.jpg') }}"
+                         alt=""
+                         class="team-image">
+                    <div class="team-info">
+                        <h3 class="team-name">Joseph Loo</h3>
+                        <p class="team-position">Programador Backend y Analista de datos</p>
+                    </div>
+                </div>
+
+                <div class="team-card fade-in" data-member="">
+                    <img src="{{ url_for('static', filename='img/mauricio.jpg') }}"
+                         alt=""
+                         class="team-image">
+                    <div class="team-info">
+                        <h3 class="team-name">Mauricio Gallo</h3>
+                        <p class="team-position">Coordinador General</p>
+                    </div>
+                </div>
+
+                <div class="team-card fade-in" data-member="">
+                    <img src="{{ url_for('static', filename='img/said.jpg') }}"
+                         alt=""
+                         class="team-image">
+                    <div class="team-info">
+                        <h3 class="team-name">Said Peceto</h3>
+                        <p class="team-position">Programador Fullstack y Base de datos</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+<!--Specific JavaScript code-->
+{% block js %}
+    <script src="{{ url_for('static', filename='js/aboutUs.js') }}"></script>
+{% endblock %}
+

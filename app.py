@@ -49,6 +49,10 @@ def profile_form():
 def cv_generate():
     return render_template('cvGenerate.html')
 
+@app.route('/about-us')
+def about_us():
+    return render_template('aboutUs.html')
+
 @app.route('/logout')
 def logout():
     session.clear()
